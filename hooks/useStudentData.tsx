@@ -102,7 +102,7 @@ export function useStudentData(studentId: string) {
     }, [studentId, setStatusCode]);
 
     return {
-        isLoading: query.isLoading,
+        isDataLoading: query.isLoading,
         data: query.data,
     };
 }

@@ -57,8 +57,8 @@ function getDepartmentColor(departmentName: string) {
 }
 
 export default function UserView() {
-    const { setStatusCode, studentId, setStudentId, inputEl } = useContext(StateStore);
-    const { data, isLoading } = useStudentData(studentId);
+    const { setStatusCode, studentId, setStudentId, inputEl, isLoading } = useContext(StateStore);
+    const { data, isDataLoading } = useStudentData(studentId);
 
     const [isLoadingModal, setIsLoadingModal] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -98,7 +98,7 @@ export default function UserView() {
 
 
     // データ取得中
-    if (isLoading) {
+    if (isLoading || isDataLoading) {
         return (
             <div className="spinner-border" role="status">
                 <span className="visually-hidden">Loading...</span>
