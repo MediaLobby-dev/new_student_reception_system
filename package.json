@@ -43,5 +43,11 @@
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
+  },
+  "build": {
+    "appId": "com.mel-tut.new-student-reception-system",
+    "files": [
+      "out/**/*"
+    ]
   }
 }
