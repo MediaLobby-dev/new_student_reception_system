@@ -1,0 +1,87 @@
+.viewBox{
+    font-size: 2rem;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.description{
+    font-size: 11px;
+    color: #838383;
+    margin-top: 10px;
+}
+
+.controlBtnBox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.smallbtn{
+    font-size: 1rem;
+}
+
+.bs {
+    background-color: #00953d;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.ms {
+    background-color: #d67582;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.cs {
+    background-color: #005785;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.es {
+    background-color: #21245b;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.hs {
+    background-color: #d12649;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.ds {
+    background-color: #f7b500;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.departmentdefault{
+    background-color: #3b3b3b;
+    color: #fff;
+    padding: 0 1rem;
+}
+
+.doneReception{
+    background-color: #9e0303;
+    color: #fff;
+    padding: 0 1rem;
+    width: fit-content;
+}
+
+
+.modalTitle{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.modalBody{
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.modalBtnBox{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}

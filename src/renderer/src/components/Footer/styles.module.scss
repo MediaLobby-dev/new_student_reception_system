@@ -1,0 +1,36 @@
+.toolBox{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.mode{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.small {
+    font-size: 0.8rem;
+}
+
+.modalTitle{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.modalBody{
+    font-size: 1rem;
+    font-weight: 400;
+
+    p > span{
+        font-weight: bold;
+    }
+}
+
+.modalBtnBox{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
