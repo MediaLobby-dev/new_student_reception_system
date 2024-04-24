@@ -1,4 +1,5 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
+import { MenuItemConstructorOptions } from 'electron/main'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -7,7 +8,7 @@ function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1400,
-    height: 800,
+    height: 900,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -70,5 +71,29 @@ app.on('window-all-closed', () => {
   }
 })
 
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
+const customMenu: Array<MenuItemConstructorOptions> = [
+  {
+      label: '表示',
+      submenu: [
+          {
+              label: 'Reload',
+              accelerator: 'CmdOrCtrl+R',
+              click(_, focusedWindow){
+                  if(focusedWindow) focusedWindow.reload()
+              },
+          },
+          {
+              type: 'separator',
+          },
+          {
+              type: 'separator',
+          },
+          {
+              role: 'togglefullscreen',
+          }
+      ]
+  }
+];
+
+const menu = Menu.buildFromTemplate(customMenu);
+Menu.setApplicationMenu(menu);

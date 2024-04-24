@@ -1,5 +1,6 @@
 {
   "name": "new-student-reception-system",
+  "productName": "新入生受付システム",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
