@@ -1,78 +1,78 @@
-.button{
-    background-color: transparent;
-    color: #4e4e4e;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 18px;
-    margin: 0 5px;
+.button {
+  background-color: transparent;
+  color: #4e4e4e;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 18px;
+  margin: 0 5px;
 }
 
-.content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    svg{
-        margin-right: 5px;
-    }
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    margin-right: 5px;
+  }
 }
 
-.primary{
-    background-color: #0D48A2;
-    color: #fff;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.primary {
+  background-color: #0d48a2;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.success{
-    background-color: #0da282;
-    color: #fff;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.success {
+  background-color: #0da282;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.danger{
-    background-color: #c31010;
-    color: #fff;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.danger {
+  background-color: #c31010;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.warning{
-    background-color: #d7d70c;
-    color: #fff;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.warning {
+  background-color: #d7d70c;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.secondary{
-    background-color: #797979;
-    color: #fff;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.secondary {
+  background-color: #797979;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.inportant{
-    border: 1px solid #c31010;
-    background-color: #fff;
-    color: #c31010;;
-    box-shadow: 0 0 5px #ccc;
-    &:hover{
-        opacity: 0.8;
-    }
+.inportant {
+  border: 1px solid #c31010;
+  background-color: #fff;
+  color: #c31010;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.disabled{
-    background-color: #b8b8b8;
-    color: #4e4e4e;
-    cursor: not-allowed;
+.disabled {
+  background-color: #b8b8b8;
+  color: #4e4e4e;
+  cursor: not-allowed;
 }

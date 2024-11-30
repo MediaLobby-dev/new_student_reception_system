@@ -1,19 +1,18 @@
 :root {
-    font-family: "メイリオ", "Meiryo", "ＭＳ ゴシック",
-      "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", sans-serif;
+  font-family: 'メイリオ', 'Meiryo', 'ＭＳ ゴシック', 'Hiragino Kaku Gothic ProN',
+    'ヒラギノ角ゴ ProN W3', sans-serif;
+}
+
+.alert {
+  animation-name: fade;
+  animation-duration: 0.8s;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
   }
-  
-  .alert {
-    animation-name: fade;
-    animation-duration: 0.8s;
+  100% {
+    opacity: 1;
   }
-  
-  @keyframes fade {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
+}
