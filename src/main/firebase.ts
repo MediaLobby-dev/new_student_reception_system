@@ -1,5 +1,5 @@
 import { initializeApp, credential } from 'firebase-admin';
-import { getApp } from 'firebase-admin/app';
+import { FirebaseAppError } from 'firebase-admin/app';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { BASE_PATH } from './index';
@@ -20,8 +20,7 @@ export const initializeFirebase = (): Response<null> => {
       },
     };
   }
-
-  if (!getApp()) {
+  try {
     initializeApp({
       credential: credential.cert(
         JSON.parse(readFileSync(join(BASE_PATH, 'config', 'sdk.json')).toString()),
@@ -31,14 +30,21 @@ export const initializeFirebase = (): Response<null> => {
       status: true,
       data: null,
     };
-  }
+  } catch (error) {
+    if (error instanceof FirebaseAppError) {
+      return {
+        status: true,
+        data: null,
+      };
+    }
 
-  return {
-    status: false,
-    data: null,
-    error: {
-      code: 400,
-      message: 'Firebase already initialized',
-    },
-  };
+    return {
+      status: false,
+      data: null,
+      error: {
+        code: 500,
+        message: (error as Error).message,
+      },
+    };
+  }
 };
