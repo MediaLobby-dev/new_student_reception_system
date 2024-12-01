@@ -7,7 +7,7 @@ import Button from '../Button';
 
 export default function RemarkInputBox({
   studentId,
-  originalRemarks
+  originalRemarks,
 }: {
   studentId: string;
   originalRemarks: string;

@@ -9,7 +9,7 @@ import Modal from 'react-modal';
 const customStyles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 10000
+    zIndex: 10000,
   },
   content: {
     top: '50%',
@@ -17,35 +17,35 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
+    transform: 'translate(-50%, -50%)',
+  },
 };
 
 const colorList: departmentColorList = [
   {
     departmentName: 'BS',
-    styleName: styles.bs
+    styleName: styles.bs,
   },
   {
     departmentName: 'MS',
-    styleName: styles.ms
+    styleName: styles.ms,
   },
   {
     departmentName: 'CS',
-    styleName: styles.cs
+    styleName: styles.cs,
   },
   {
     departmentName: 'ES',
-    styleName: styles.es
+    styleName: styles.es,
   },
   {
     departmentName: 'HS',
-    styleName: styles.hs
+    styleName: styles.hs,
   },
   {
     departmentName: 'DS',
-    styleName: styles.ds
-  }
+    styleName: styles.ds,
+  },
 ];
 
 function getDepartmentColor(departmentName: string) {
@@ -69,7 +69,7 @@ export default function UserView() {
     supply: 'サプライ品',
     isDeprecatedPC: false,
     isNeedNotify: false,
-    receptionStatus: true
+    receptionStatus: true,
   };
 
   function openModal() {

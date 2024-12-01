@@ -5,6 +5,7 @@ import UserTable from './components/UserView';
 import MessageBox from './components/MessageBox';
 import Loading from './components/Loading';
 import { StudentData } from './types';
+import { ipcRenderer } from 'electron';
 
 type StateStoreProps = {
   studentId: string; // 学籍番号
@@ -28,7 +29,7 @@ export const StateStore = createContext<StateStoreProps>({
   statusCode: 0,
   isLoading: {
     status: false,
-    message: ''
+    message: '',
   },
   data: {
     studentId: '',
@@ -39,18 +40,18 @@ export const StateStore = createContext<StateStoreProps>({
     supply: '',
     receptionStatus: false,
     isNeedNotify: false,
-    isDeprecatedPC: false
+    isDeprecatedPC: false,
   },
   inputEl: { current: null },
   isDeprecatedPCReception: false,
-  setStudentId: () => {},
-  setStatusCode: () => {},
-  setData: () => {},
-  setIsDeprecatedPCReception: () => {},
-  setIsLoading: () => {}
+  setStudentId: () => { },
+  setStatusCode: () => { },
+  setData: () => { },
+  setIsDeprecatedPCReception: () => { },
+  setIsLoading: () => { },
 });
 
-function App() {
+function App(): JSX.Element {
   const [studentId, setStudentId] = useState<string>('');
   const [statusCode, setStatusCode] = useState<number>(0);
   const [data, setData] = useState<StudentData>({
@@ -62,12 +63,12 @@ function App() {
     supply: '',
     receptionStatus: false,
     isNeedNotify: false,
-    isDeprecatedPC: false
+    isDeprecatedPC: false,
   });
   const [isDeprecatedPCReception, setIsDeprecatedPCReception] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<StateStoreProps['isLoading']>({
     status: false,
-    message: ''
+    message: '',
   });
 
   const inputEl = useRef<HTMLInputElement>(null);
@@ -92,11 +93,19 @@ function App() {
             isDeprecatedPCReception,
             setIsDeprecatedPCReception,
             isLoading,
-            setIsLoading
+            setIsLoading,
           }}
         >
           <StudentIdInputBox />
           <MessageBox />
+          <button type="button" className="btn btn-primary" onClick={() => {
+            window.electron.ipcRenderer.invoke('sdk-save').then((res) => {
+              console.log(res);
+            });
+          }}
+          >
+            Save SDK
+          </button>
           {isLoading.status && <Loading message={isLoading.message} />}
           {studentId && <UserTable />}
           <Footer />

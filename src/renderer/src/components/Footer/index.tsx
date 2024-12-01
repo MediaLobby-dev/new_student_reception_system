@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 const customStyles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 10000
+    zIndex: 10000,
   },
   content: {
     top: '50%',
@@ -17,8 +17,8 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
+    transform: 'translate(-50%, -50%)',
+  },
 };
 
 export default function Footer() {

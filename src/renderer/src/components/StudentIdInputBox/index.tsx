@@ -14,7 +14,7 @@ export default function StudentIdInputBox() {
     inputEl,
     setStatusCode,
     isDeprecatedPCReception,
-    setIsLoading
+    setIsLoading,
   } = useContext(StateStore);
 
   const make_accepted_processing = async (studentId: string) => {
@@ -25,7 +25,7 @@ export default function StudentIdInputBox() {
     studentId: string,
     studentName: string,
     kana: string,
-    callback: () => void
+    callback: () => void,
   ) => {
     console.log('printRecipt');
   };
