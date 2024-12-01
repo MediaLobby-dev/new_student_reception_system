@@ -3,6 +3,7 @@ import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { saveSdk } from './functions/saveSdk';
+import { initializeFirebase } from './firebase';
 
 export const BASE_PATH = app.getPath('home');
 
@@ -13,7 +14,11 @@ function createWindow(): void {
     height: 850,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform === 'linux'
+      ? {
+          icon,
+        }
+      : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -26,7 +31,9 @@ function createWindow(): void {
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
-    return { action: 'deny' };
+    return {
+      action: 'deny',
+    };
   });
 
   // HMR for renderer base on electron-vite cli.
@@ -52,8 +59,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
+  // [IPC] Firebase SDK準備完了確認
+  ipcMain.handle('initialize-firebase', () => initializeFirebase());
 
   // [IPC] Firebase SDK保存
   ipcMain.handle('sdk-save', () => saveSdk());

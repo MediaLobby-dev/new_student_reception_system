@@ -3,6 +3,7 @@ import fs from 'fs';
 import { BASE_PATH } from '../index';
 import { Response } from '../../types/response';
 import { BrowserWindow, dialog } from 'electron';
+import { initializeFirebase } from '../firebase';
 
 export const saveSdk = async (): Promise<Response<null>> => {
   const configDirPath = join(BASE_PATH, 'config');
@@ -28,7 +29,12 @@ export const saveSdk = async (): Promise<Response<null>> => {
   // ファイルを選択
   const paths = dialog.showOpenDialogSync(mainWin, {
     buttonLabel: '開く',
-    filters: [{ name: 'sdk', extensions: ['json'] }],
+    filters: [
+      {
+        name: 'sdk',
+        extensions: ['json'],
+      },
+    ],
     properties: ['openFile', 'createDirectory'],
   });
 
@@ -57,6 +63,9 @@ export const saveSdk = async (): Promise<Response<null>> => {
       },
     };
   }
+
+  // Firebase SDKの初期化
+  initializeFirebase();
 
   return {
     status: true,

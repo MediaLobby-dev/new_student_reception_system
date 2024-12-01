@@ -5,7 +5,6 @@ import UserTable from './components/UserView';
 import MessageBox from './components/MessageBox';
 import Loading from './components/Loading';
 import { StudentData } from './types';
-import { ipcRenderer } from 'electron';
 
 type StateStoreProps = {
   studentId: string; // 学籍番号
@@ -42,13 +41,15 @@ export const StateStore = createContext<StateStoreProps>({
     isNeedNotify: false,
     isDeprecatedPC: false,
   },
-  inputEl: { current: null },
+  inputEl: {
+    current: null,
+  },
   isDeprecatedPCReception: false,
-  setStudentId: () => { },
-  setStatusCode: () => { },
-  setData: () => { },
-  setIsDeprecatedPCReception: () => { },
-  setIsLoading: () => { },
+  setStudentId: () => {},
+  setStatusCode: () => {},
+  setData: () => {},
+  setIsDeprecatedPCReception: () => {},
+  setIsLoading: () => {},
 });
 
 function App(): JSX.Element {
@@ -74,8 +75,14 @@ function App(): JSX.Element {
   const inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setIsLoading({ status: true, message: 'しばらくお待ち下さい...' });
-    setIsLoading({ status: false, message: '' });
+    setIsLoading({
+      status: true,
+      message: 'しばらくお待ち下さい...',
+    });
+    setIsLoading({
+      status: false,
+      message: '',
+    });
   }, []);
 
   return (
@@ -98,13 +105,27 @@ function App(): JSX.Element {
         >
           <StudentIdInputBox />
           <MessageBox />
-          <button type="button" className="btn btn-primary" onClick={() => {
-            window.electron.ipcRenderer.invoke('sdk-save').then((res) => {
-              console.log(res);
-            });
-          }}
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              window.electron.ipcRenderer.invoke('sdk-save').then((res) => {
+                console.log(res);
+              });
+            }}
           >
             Save SDK
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => {
+              window.electron.ipcRenderer.invoke('initialize-firebase').then((res) => {
+                console.log(res);
+              });
+            }}
+          >
+            Check Firebase
           </button>
           {isLoading.status && <Loading message={isLoading.message} />}
           {studentId && <UserTable />}
