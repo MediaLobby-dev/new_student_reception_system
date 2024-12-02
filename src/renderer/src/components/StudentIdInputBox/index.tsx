@@ -1,44 +1,45 @@
-import { useContext } from 'react';
-import Button from '../Button';
-import { StateStore } from '../../App';
-
 import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
+import Button from '../Button';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isDeprecatedPCReceptionAtom, isLoadingAtom, statusCodeAtom, studentDataAtom, studentIdAtom } from '../../atom';
+import { forwardRef } from 'react';
 
-export default function StudentIdInputBox() {
-  const {
-    statusCode,
-    studentId,
-    setStudentId,
-    data,
-    inputEl,
-    setStatusCode,
-    isDeprecatedPCReception,
-    setIsLoading,
-  } = useContext(StateStore);
+type StudentIdInputBoxProps = {
+  handleResrtInputStudentId: () => void;
+};
 
-  const make_accepted_processing = async (studentId: string) => {
-    console.log('make_accepted_processing');
-  };
+const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
+  const setStudentId = useSetAtom(studentIdAtom);
+  const statusCode = useAtomValue(statusCodeAtom);
+  const data = useAtomValue(studentDataAtom);
 
-  const printRecipt = async (
-    studentId: string,
-    studentName: string,
-    kana: string,
-    callback: () => void,
-  ) => {
-    console.log('printRecipt');
-  };
+  const setIsLoading = useSetAtom(isLoadingAtom);
+  
+  const setStatusCode = useSetAtom(statusCodeAtom);
+  const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
+
+
+
+  // const make_accepted_processing = async (studentId: string) => {
+  //   console.log('make_accepted_processing');
+  // };
+
+  // const printRecipt = async (
+  //   studentId: string,
+  //   studentName: string,
+  //   kana: string,
+  //   callback: () => void,
+  // ) => {
+  //   console.log('printRecipt');
+  // };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length === 0) {
       // 学籍番号をリセット
       setStudentId('');
       // フォーカスをリセット
-      if (inputEl.current) {
-        inputEl.current.value = '';
-        inputEl.current.focus();
-      }
+      handleResrtInputStudentId();
     }
     setStudentId(e.target.value);
   };
@@ -48,10 +49,7 @@ export default function StudentIdInputBox() {
     // 学籍番号をリセット
     setStudentId('');
     // フォーカスをリセット
-    if (inputEl.current) {
-      inputEl.current.value = '';
-      inputEl.current.focus();
-    }
+    handleResrtInputStudentId();
   };
 
   // 確認済みボタンの無効化
@@ -79,33 +77,33 @@ export default function StudentIdInputBox() {
     return false;
   }
 
-  function printSuccessfully() {
-    // ステータスコードを更新
-    setStatusCode(203);
-    // 学籍番号をリセット
-    setStudentId('');
-    // フォーカスをリセット
-    if (inputEl.current) {
-      inputEl.current.value = '';
-      inputEl.current.focus();
-    }
-  }
+  // function printSuccessfully() {
+  //   // ステータスコードを更新
+  //   setStatusCode(203);
+  //   // 学籍番号をリセット
+  //   setStudentId('');
+  //   // フォーカスをリセット
+  //   if (inputEl.current) {
+  //     inputEl.current.value = '';
+  //     inputEl.current.focus();
+  //   }
+  // }
 
   async function handlReceptionCheck() {
     if (isDeprecatedPCReception) {
-      // 後にリファクタリング
-      setIsLoading({
-        status: true,
-        message: '処理中...',
-      });
-      await make_accepted_processing(studentId);
-      printSuccessfully();
-      setIsLoading({
-        status: false,
-        message: '',
-      });
+      // // 後にリファクタリング
+      // setIsLoading({
+      //   status: true,
+      //   message: '処理中...',
+      // });
+      // //await make_accepted_processing(studentId);
+      // printSuccessfully();
+      // setIsLoading({
+      //   status: false,
+      //   message: '',
+      // });
     } else {
-      printRecipt(studentId, data.studentName, data.kana, printSuccessfully);
+      //printRecipt(studentId, data.studentName, data.kana, printSuccessfully);
     }
   }
 
@@ -117,7 +115,7 @@ export default function StudentIdInputBox() {
         </div>
         <div className="col-auto">
           <input
-            ref={inputEl}
+            ref={ref}
             type="text"
             autoFocus={true}
             className="form-control"
@@ -140,4 +138,6 @@ export default function StudentIdInputBox() {
       </div>
     </>
   );
-}
+});
+
+export default StudentIdInputBox;

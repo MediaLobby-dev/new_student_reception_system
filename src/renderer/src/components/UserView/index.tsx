@@ -1,10 +1,13 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState } from 'react';
+import { useSetAtom } from 'jotai';
+
 import RemarkInputBox from '../RemarkInputBox';
-import { StateStore } from '../../App';
 import styles from './styles.module.scss';
 import { departmentColorList } from '../../types';
 import Button from '../Button';
 import Modal from 'react-modal';
+
+import { studentIdAtom } from '../../atom';
 
 const customStyles = {
   overlay: {
@@ -54,8 +57,12 @@ function getDepartmentColor(departmentName: string) {
   return color?.styleName;
 }
 
-export default function UserView() {
-  const { setStatusCode, studentId, setStudentId, inputEl, setIsLoading } = useContext(StateStore);
+type UserViewProps = {
+  handleResrtInputStudentId: () => void;
+};
+
+export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
+  const setStudentId = useSetAtom(studentIdAtom);
 
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -84,10 +91,7 @@ export default function UserView() {
     // 学籍番号をリセット
     setStudentId('');
     // フォーカスをリセット
-    if (inputEl.current) {
-      inputEl.current.value = '';
-      inputEl.current.focus();
-    }
+    handleResrtInputStudentId();
   }
 
   async function onClickCancelReception() {

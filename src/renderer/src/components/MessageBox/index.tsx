@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import { StateStore } from '../../App';
+import { useAtomValue } from 'jotai';
 import { ErrorCodeList } from '../../types';
+import { statusCodeAtom } from '../../atom';
 
 export default function MessageBox() {
-  const { statusCode } = useContext(StateStore);
+  const statusCode = useAtomValue(statusCodeAtom);
 
   const message = ErrorCodeList.find((element) => element.code === statusCode)?.message;
   const subMessage = ErrorCodeList.find((element) => element.code === statusCode)?.subMessage;

@@ -1,32 +1,32 @@
-import { useState, useContext } from 'react';
-import { StateStore } from '../../App';
-
+import { useState } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
 import styles from './styles.module.scss';
-
 import Button from '../Button';
 
+import { statusCodeAtom, studentIdAtom } from '../../atom';
+
 export default function RemarkInputBox({
-  studentId,
   originalRemarks,
 }: {
   studentId: string;
   originalRemarks: string;
 }) {
   const [remarks, setRemarks] = useState<string>(originalRemarks);
-  const { statusCode, setStatusCode } = useContext(StateStore);
+  const studentId = useAtomValue(studentIdAtom);
+  const [statusCode, setStatusCode] = useAtom(statusCodeAtom);
 
-  const editRemarks = (studentId: string, remarks: string) => {
-    console.log('editRemarks');
-    return true;
-  };
+  // const editRemarks = (studentId: string, remarks: string) => {
+  //   console.log('editRemarks');
+  //   return true;
+  // };
 
   async function updateRemarks(): Promise<void> {
-    const res = await editRemarks(studentId, remarks);
-    if (res === true) {
-      setStatusCode(201);
-    } else {
-      setStatusCode(500);
-    }
+    // const res = await editRemarks(studentId, remarks);
+    // if (res === true) {
+    //   setStatusCode(201);
+    // } else {
+    //   setStatusCode(500);
+    // }
   }
 
   return (

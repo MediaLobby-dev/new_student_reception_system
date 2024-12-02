@@ -1,10 +1,13 @@
+import { useAtom } from 'jotai';
+
 import { GrHelpBook, GrPrint, GrUpdate } from 'react-icons/gr';
 import Button from '../Button';
-import { useContext, useState } from 'react';
-import { StateStore } from '../../App';
+import { useState } from 'react';
 import Modal from 'react-modal';
 
 import styles from './styles.module.scss';
+
+import { isDeprecatedPCReceptionAtom } from '../../atom';
 
 const customStyles = {
   overlay: {
@@ -22,7 +25,7 @@ const customStyles = {
 };
 
 export default function Footer() {
-  const { isDeprecatedPCReception, setIsDeprecatedPCReception } = useContext(StateStore);
+  const [isDeprecatedPCReception, setIsDeprecatedPCReception] = useAtom(isDeprecatedPCReceptionAtom);
   const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
