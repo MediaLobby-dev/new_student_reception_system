@@ -23,10 +23,14 @@ export const useInitializeFirebase = () => {
             }
         };
     
-        return () => {
+        const timer = setTimeout(() => {
             initializeFirebase();
-        }
+        }, 3000);
+    
+        return () => {
+            clearTimeout(timer);
+        };
     }, []);
 
-    return isInitialized;
+    return { isInitialized };
 }
