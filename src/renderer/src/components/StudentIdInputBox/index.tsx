@@ -2,8 +2,10 @@ import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
 import Button from '../Button';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isDeprecatedPCReceptionAtom, isLoadingAtom, errorKey, studentDataAtom, studentIdAtom } from '../../atom';
+import { isDeprecatedPCReceptionAtom, isLoadingAtom, errorKey, studentIdAtom } from '../../atom';
 import { forwardRef } from 'react';
+import { ErrorCode } from '../../../../types/errorCode';
+import { useAcceptReception } from '../../hooks/useAcceptReception';
 
 type StudentIdInputBoxProps = {
   handleResrtInputStudentId: () => void;
@@ -12,26 +14,9 @@ type StudentIdInputBoxProps = {
 const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
   const setStudentId = useSetAtom(studentIdAtom);
   const [errorKeyCode, setErrorKeyCode] = useAtom(errorKey);
-  const data = useAtomValue(studentDataAtom);
-
   const setIsLoading = useSetAtom(isLoadingAtom);
-  
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
-
-
-
-  // const make_accepted_processing = async (studentId: string) => {
-  //   console.log('make_accepted_processing');
-  // };
-
-  // const printRecipt = async (
-  //   studentId: string,
-  //   studentName: string,
-  //   kana: string,
-  //   callback: () => void,
-  // ) => {
-  //   console.log('printRecipt');
-  // };
+  const { acceptReception } = useAcceptReception();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length === 0) {
@@ -54,38 +39,32 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdI
 
   // 確認済みボタンの無効化
   function disabledCheck() {
-    if(errorKeyCode === null) return true;
-    if(data.receptionStatus) return true;
-    return false;
+    if(errorKeyCode === ErrorCode.SUCCESSFUL_GET_STUDENT_DATA) return false;
+    return true;
   }
-
-  // function printSuccessfully() {
-  //   // ステータスコードを更新
-  //   setStatusCode(203);
-  //   // 学籍番号をリセット
-  //   setStudentId('');
-  //   // フォーカスをリセット
-  //   if (inputEl.current) {
-  //     inputEl.current.value = '';
-  //     inputEl.current.focus();
-  //   }
-  // }
 
   async function handlReceptionCheck() {
     if (isDeprecatedPCReception) {
-      // // 後にリファクタリング
-      // setIsLoading({
-      //   status: true,
-      //   message: '処理中...',
-      // });
-      // //await make_accepted_processing(studentId);
-      // printSuccessfully();
-      // setIsLoading({
-      //   status: false,
-      //   message: '',
-      // });
+      // 後にリファクタリング
+      setIsLoading({
+        status: true,
+        message: '処理中...',
+      });
+      acceptReception();
+      setIsLoading({
+        status: false,
+        message: '',
+      });
     } else {
-      //printRecipt(studentId, data.studentName, data.kana, printSuccessfully);
+      setIsLoading({
+        status: true,
+        message: '処理中...',
+      });
+      acceptReception();
+      setIsLoading({
+        status: false,
+        message: '',
+      });
     }
   }
 

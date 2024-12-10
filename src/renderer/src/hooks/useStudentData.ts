@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { studentIdAtom, isLoadingAtom, errorKey, studentDataAtom, resetStudentData } from "../atom";
+import { studentIdAtom, isLoadingAtom, errorKey, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom } from "../atom";
 import { StudentData } from "../types";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
@@ -9,12 +9,10 @@ export const useStudentData = () => {
     const studentId = useAtomValue(studentIdAtom);
     const setIsLoading = useSetAtom(isLoadingAtom);
     const setErrorKeyCode = useSetAtom(errorKey);
+    const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
 
     const [studentData, setStudentData] = useAtom(studentDataAtom);
     const resetAll = useSetAtom(resetStudentData);
-
-
-    console.log(studentId);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +31,25 @@ export const useStudentData = () => {
             .invoke("getStudentData", studentId)
             .then((res: Response<StudentData>) => {
                 console.log(res);
-                if (res.status) {
+                // 案内所対応が必要な場合
+                if (res.status && res.data.isNeedNotify) {
+                    setErrorKeyCode(ErrorCode.UNABLE_RECEPTION);
+                    return;
+                }
+
+                // 非推奨PC受付時に推奨PCの人が来た場合
+                if (res.status && res.data.isDeprecatedPC && isDeprecatedPCReception) {
+                    setErrorKeyCode(ErrorCode.PURCHASED_RECOMMENDED_MACHINE);
+                    return;
+                }
+
+                // 推奨PC受付時に非推奨PCの人が来た場合
+                if (res.status && !res.data.isDeprecatedPC && !isDeprecatedPCReception) {
+                    setErrorKeyCode(ErrorCode.NON_RECOMMENDED_MACHINE);
+                    return;
+                }
+
+                if (res.status && res.data) {
                     setStudentData(res.data);
                     setErrorKeyCode(ErrorCode.SUCCESSFUL_GET_STUDENT_DATA);
                 } else {

@@ -1,13 +1,25 @@
 import { Response } from '../../types/response';
 import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
+import { ErrorCode } from '../../types/errorCode';
 
-export const getStudentData = async (studentId: string): Promise<Response<StudentData>> => {
+export const getStudentData = async (studentId: string): Promise<Response<StudentData | null>> => {
   const db = firestore();
 
   const docRef = db.collection('students').doc(studentId);
   const docSnap = await docRef.get();
   const res = docSnap.data();
+
+  if (!res) {
+    return {
+      status: false,
+      data: null,
+      error:{
+        code: ErrorCode.NOT_FOUND_STUDENT,
+        message: '対象の学籍番号の学生が見つかりませんでした'
+      }
+    };
+  }
 
   return {
     status: true,

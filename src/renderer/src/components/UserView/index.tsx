@@ -7,7 +7,8 @@ import Button from '../Button';
 import Modal from 'react-modal';
 
 import { studentIdAtom } from '../../atom';
-import { useStudentData } from '@renderer/hooks/useStudentData';
+import { useStudentData } from '../../hooks/useStudentData';
+import { useCancelReception } from '../../hooks/useCancelReception';
 
 const customStyles = {
   overlay: {
@@ -30,10 +31,12 @@ type UserViewProps = {
 
 export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
   const setStudentId = useSetAtom(studentIdAtom);
-  const { data } = useStudentData();
-
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  const { data } = useStudentData();
+
+  const {cancelReception} = useCancelReception();
 
   function openModal() {
     setIsOpen(true);
@@ -52,9 +55,9 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
 
   async function onClickCancelReception() {
     setIsLoadingModal(true);
-
+    cancelReception();
+    setIsLoadingModal(false);
     closeModal();
-    reset();
   }
 
   // データが存在しない

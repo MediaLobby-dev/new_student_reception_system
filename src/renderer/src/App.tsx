@@ -11,17 +11,6 @@ function App(): JSX.Element {
   const studentId = useAtomValue(studentIdAtom);
   const isLoading = useAtomValue(isLoadingAtom);
 
-  // useEffect(() => {
-  //   setIsLoading({
-  //     status: true,
-  //     message: 'しばらくお待ち下さい...',
-  //   });
-  //   setIsLoading({
-  //     status: false,
-  //     message: '',
-  //   });
-  // }, []);
-
   const inputEl = useRef<HTMLInputElement | null>(null);
   const handleResrtInputStudentId = () => {
     if (inputEl.current) {

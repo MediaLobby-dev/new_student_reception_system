@@ -5,6 +5,9 @@ import icon from '../../resources/icon.png?asset';
 import { saveSdk } from './functions/saveSdk';
 import { initializeFirebase } from './firebase';
 import { getStudentData } from './functions/getStudentData';
+import { acceptReception } from './functions/acceptReception';
+import { editRemarks } from './functions/editRemark';
+import { cancelReception } from './functions/cancelReception';
 
 export const BASE_PATH = app.getPath('home');
 
@@ -74,16 +77,9 @@ ipcMain.handle('saveSdk', async () => saveSdk());
 ipcMain.handle('getStudentData', async (event: IpcMainInvokeEvent, studentId: string) => getStudentData(studentId));
 
 // [IPC] 生徒受付
-ipcMain.handle('acceptReception', async () => {
-  return [];
-});
+ipcMain.handle('acceptReception', async (event: IpcMainInvokeEvent, studentId: string) => acceptReception(studentId));
 
 // [IPC] 備考欄編集
-ipcMain.handle('editRemarks', async () => {
-  return [];
-});
-
+ipcMain.handle('editRemarks', async (event: IpcMainInvokeEvent, studentId: string, newRemark: string) => editRemarks(studentId, newRemark));
 // [IPC] 受付キャンセル
-ipcMain.handle('cancelReception', async () => {
-  return [];
-});
+ipcMain.handle('cancelReception', async (event: IpcMainInvokeEvent, studentId: string) => cancelReception(studentId));
