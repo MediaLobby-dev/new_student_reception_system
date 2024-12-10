@@ -1,96 +1,58 @@
 import { useAtomValue } from 'jotai';
-import { ErrorCodeList } from '../../types';
-import { statusCodeAtom } from '../../atom';
+import { errorKey } from '../../atom';
+import { ErrorCode, ErrorCodeList } from '../../../../types/errorCode';
 
 export default function MessageBox() {
-  const statusCode = useAtomValue(statusCodeAtom);
 
-  const message = ErrorCodeList.find((element) => element.code === statusCode)?.message;
-  const subMessage = ErrorCodeList.find((element) => element.code === statusCode)?.subMessage;
+  const errorKeyCode = useAtomValue(errorKey);
 
-  // ステータスコードが未定義、0の場合は、非表示
-  if (!statusCode) return <></>;
-
-  // ステータスコードが405の場合は、情報メッセージを表示
-  if (statusCode === 405) {
-    return (
-      <div className="container py-2">
-        <div className="alert alert-info" role="alert">
-          <p className="mb-0">{message ? message : ''}</p>
-          <p className="mb-0">{subMessage ? subMessage : ''}</p>
+  switch (errorKeyCode) {
+    // 成功系
+    case ErrorCode.SUCCESSFUL_GET_STUDENT_DATA:
+    case ErrorCode.SUCCESSFUL_CANCEL_RECEPTION:
+    case ErrorCode.SUCCESSFUL_RECEPTION:
+    case ErrorCode.SUCCESSFUL_EDIT_REMARK:
+      return (
+        <div className="container py-2">
+          <div className="alert alert-success" role="alert">
+            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
+          </div>
         </div>
-      </div>
-    );
-  }
+      )
 
-  if (statusCode === 401) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <h4 className="alert-heading fw-bold">告知事項あり</h4>
-        <p>{message ? message : ''}</p>
-        <hr />
-        <p className="mb-0">{subMessage ? subMessage : ''}</p>
-      </div>
-    );
-  }
-
-  if (statusCode === 4021) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <h4 className="alert-heading fw-bold">推奨機です</h4>
-        <p>{message ? message : ''}</p>
-        <hr />
-        <p className="mb-0">{subMessage ? subMessage : ''}</p>
-      </div>
-    );
-  }
-
-  if (statusCode === 4022) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        <h4 className="alert-heading fw-bold">非推奨機です</h4>
-        <p>{message ? message : ''}</p>
-        <hr />
-        <p className="mb-0">{subMessage ? subMessage : ''}</p>
-      </div>
-    );
-  }
-
-  // ステータスコードが2xxの場合は、成功メッセージを表示
-  if (statusCode.toString().startsWith('2')) {
-    return (
-      <div className="container py-2">
-        <div className="alert alert-success" role="alert">
-          <p className="mb-0">{message ? message : ''}</p>
+    case ErrorCode.INVALID_STUDENT_NUMBER:
+      return (
+        <div className="container py-2">
+          <div className="alert alert-info" role="alert">
+            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
+            <p className="mb-0">{ErrorCodeList[errorKeyCode].subMessage}</p>
+          </div>
         </div>
-      </div>
-    );
-  }
+      )
 
-  // ステータスコードが4xxの場合は、エラーメッセージを表示
-  if (statusCode.toString().startsWith('4')) {
-    return (
-      <div className="container py-2">
-        <div className="alert alert-danger" role="alert">
-          <p className="mb-0">{message ? message : ''}</p>
-          <p className="mb-0">{subMessage ? subMessage : ''}</p>
+    case ErrorCode.BAD_REQUEST:
+    case ErrorCode.UNABLE_RECEPTION:
+    case ErrorCode.NOT_FOUND_STUDENT:
+    case ErrorCode.INTERNAL_SERVER_ERROR:
+      return (
+        <div className="container py-2">
+          <div className="alert alert-danger" role="alert">
+            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
+            <p className="mb-0">{ErrorCodeList[errorKeyCode].subMessage}</p>
+          </div>
         </div>
-      </div>
-    );
-  }
+      )
 
-  // ステータスコードが5xxの場合は、エラーメッセージを表示
-  if (statusCode.toString().startsWith('5')) {
-    return (
-      <div className="container py-2">
-        <div className="alert alert-danger" role="alert">
-          <p className="mb-0">{message ? message : ''}</p>
-          <p className="mb-0">{subMessage ? subMessage : ''}</p>
-        </div>
-      </div>
-    );
-  }
+      case ErrorCode.PURCHASED_RECOMMENDED_MACHINE:
+      case ErrorCode.NON_RECOMMENDED_MACHINE:
+        return (
+          <div className="alert alert-danger" role="alert">
+            <h4 className="alert-heading fw-bold">{ErrorCodeList[errorKeyCode].message}</h4>
+            <p>{ErrorCodeList[errorKeyCode].subMessage}</p>
+          </div>
+        )
 
-  // それ以外の場合は、非表示
-  return <></>;
+      default:
+        return <></>;
+  }
 }

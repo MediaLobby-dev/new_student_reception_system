@@ -1,10 +1,10 @@
+import { ErrorCode } from "./errorCode";
+
 export interface Response<T> {
   status: boolean;
   data: T;
-  error?: ErrorObject;
-}
-
-export interface ErrorObject {
-  code: number;
-  message: string;
+  error? :{
+    code: ErrorCode
+    message?: string;
+  }
 }

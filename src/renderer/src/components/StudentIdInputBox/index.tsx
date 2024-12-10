@@ -1,8 +1,8 @@
 import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
 import Button from '../Button';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { isDeprecatedPCReceptionAtom, isLoadingAtom, statusCodeAtom, studentDataAtom, studentIdAtom } from '../../atom';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { isDeprecatedPCReceptionAtom, isLoadingAtom, errorKey, studentDataAtom, studentIdAtom } from '../../atom';
 import { forwardRef } from 'react';
 
 type StudentIdInputBoxProps = {
@@ -11,12 +11,11 @@ type StudentIdInputBoxProps = {
 
 const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
   const setStudentId = useSetAtom(studentIdAtom);
-  const statusCode = useAtomValue(statusCodeAtom);
+  const [errorKeyCode, setErrorKeyCode] = useAtom(errorKey);
   const data = useAtomValue(studentDataAtom);
 
   const setIsLoading = useSetAtom(isLoadingAtom);
   
-  const setStatusCode = useSetAtom(statusCodeAtom);
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
 
 
@@ -46,7 +45,7 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdI
   };
 
   const inputReset = () => {
-    setStatusCode(0);
+    setErrorKeyCode(null);
     // 学籍番号をリセット
     setStudentId('');
     // フォーカスをリセット
@@ -55,26 +54,8 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdI
 
   // 確認済みボタンの無効化
   function disabledCheck() {
-    // ステータスコードが0の場合は、無効にする
-    if (statusCode === 0) {
-      return true;
-    }
-
-    // ステータスコードが4xxで始まる場合は、無効にする
-    if (statusCode.toString().startsWith('4')) {
-      return true;
-    }
-
-    // ステータスコードが5xxで始まる場合は、無効にする
-    if (statusCode.toString().startsWith('5')) {
-      return true;
-    }
-
-    // 受付済みの場合は再度確認を無効にする
-    if (data?.receptionStatus === true) {
-      return true;
-    }
-
+    if(errorKeyCode === null) return true;
+    if(data.receptionStatus) return true;
     return false;
   }
 

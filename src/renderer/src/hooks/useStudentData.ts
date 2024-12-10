@@ -1,13 +1,14 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { studentIdAtom, isLoadingAtom, statusCodeAtom, studentDataAtom, resetStudentData } from "../atom";
+import { studentIdAtom, isLoadingAtom, errorKey, studentDataAtom, resetStudentData } from "../atom";
 import { StudentData } from "../types";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
+import { ErrorCode } from "../../../types/errorCode";
 
 export const useStudentData = () => {
     const studentId = useAtomValue(studentIdAtom);
     const setIsLoading = useSetAtom(isLoadingAtom);
-    const setStatusCode = useSetAtom(statusCodeAtom);
+    const setErrorKeyCode = useSetAtom(errorKey);
 
     const [studentData, setStudentData] = useAtom(studentDataAtom);
     const resetAll = useSetAtom(resetStudentData);
@@ -19,7 +20,7 @@ export const useStudentData = () => {
         const fetchData = async () => {
 
         if (studentId.length !== 8) {
-            setStatusCode(405);
+            setErrorKeyCode(ErrorCode.INVALID_STUDENT_NUMBER);
             return;
         }
 
@@ -34,14 +35,14 @@ export const useStudentData = () => {
                 console.log(res);
                 if (res.status) {
                     setStudentData(res.data);
-                    setStatusCode(200);
+                    setErrorKeyCode(ErrorCode.SUCCESSFUL_GET_STUDENT_DATA);
                 } else {
-                    setStatusCode(404);
+                    setErrorKeyCode(ErrorCode.NOT_FOUND_STUDENT);
                 }
             })
             .catch((err) => {
                 console.error(err);
-                setStatusCode(500);
+                setErrorKeyCode(ErrorCode.INTERNAL_SERVER_ERROR);
             })
             .finally(() => {
                 setIsLoading({

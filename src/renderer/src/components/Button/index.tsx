@@ -2,7 +2,7 @@ import styles from './styles.module.scss';
 import classNames from 'classnames';
 
 type Props = {
-  status?: 'primary' | 'success' | 'danger' | 'warning' | 'secondary' | 'important';
+  status?: 'primary' | 'success' | 'danger' | 'warning' | 'secondary' | 'important' | 'info' | 'wide';
   onClick: () => void;
   disabled?: boolean;
   children?: React.ReactNode;
@@ -54,6 +54,19 @@ export default function Button({ status, children, onClick, disabled }: Props) {
     case 'important':
       return (
         <button className={classNames(styles.button, styles.inportant)} onClick={onClick}>
+          <div className={styles.content}>{children}</div>
+        </button>
+      );
+
+    case 'info':
+      return (
+        <button className={classNames(styles.button, styles.info)} onClick={onClick}>
+          <div className={styles.content}>{children}</div>
+        </button>
+      );
+    case 'wide':
+      return (
+        <button className={classNames(styles.button, styles.wide)} onClick={onClick}>
           <div className={styles.content}>{children}</div>
         </button>
       );

@@ -35,28 +35,6 @@ function App(): JSX.Element {
       <div className="container py-4">
         <StudentIdInputBox ref={inputEl} handleResrtInputStudentId={handleResrtInputStudentId} />
         <MessageBox />
-        {/* <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            window.electron.ipcRenderer.invoke('saveSdk').then((res) => {
-              console.log(res);
-            });
-          }}
-        >
-          Save SDK
-        </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            window.electron.ipcRenderer.invoke('initializeFirebase').then((res) => {
-              console.log(res);
-            });
-          }}
-        >
-          Check Firebase
-        </button> */}
         {isLoading.status && <Loading message={isLoading.message} />}
         {studentId && <UserTable handleResrtInputStudentId={handleResrtInputStudentId} />}
         <Footer />

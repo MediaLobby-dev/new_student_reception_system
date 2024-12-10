@@ -11,7 +11,7 @@ export const BASE_PATH = app.getPath('home');
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1400,
-    height: 850,
+    height: 900,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux'

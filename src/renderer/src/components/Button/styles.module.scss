@@ -71,6 +71,23 @@
   }
 }
 
+.info {
+  background-color: #0d48a2;
+  color: #fff;
+  box-shadow: 0 0 5px #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.wide {
+  padding: 8px 30px;
+  border: 1px solid #ccc;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .disabled {
   background-color: #b8b8b8;
   color: #4e4e4e;

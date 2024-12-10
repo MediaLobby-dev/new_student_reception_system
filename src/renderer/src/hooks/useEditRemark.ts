@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import {remarkAtom, statusCodeAtom, studentIdAtom} from "../atom";
+import {remarkAtom, errorKey, studentIdAtom} from "../atom";
+import { ErrorCode } from "../../../types/errorCode";
 
 export const useEditRemark = () => {
     const studentId = useAtomValue(studentIdAtom);
@@ -9,12 +10,12 @@ export const useEditRemark = () => {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
 
-    const setStatusCode = useSetAtom(statusCodeAtom);
+    const setErrorKeyCode = useSetAtom(errorKey);
 
     const updateRemark = useCallback(async () => {
         console.log('updateRemark');
         console.log(studentId);
-        setStatusCode(500);
+        setErrorKeyCode(ErrorCode.INTERNAL_SERVER_ERROR);
         setIsError(true);
         
         // TODO: IPC通信処理を実装
