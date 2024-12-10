@@ -18,7 +18,7 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && elelocalon-builder --linux"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
@@ -54,9 +54,15 @@
     "vite": "^5.0.12"
   },
   "build": {
-    "appId": "com.mel-tut.new-student-reception-system",
+    "appId": "local.mel-tut.new-student-reception-system",
     "files": [
       "out/**/*"
-    ]
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "MediaLobby-dev",
+      "repo": "new_student_reception_system",
+      "releaseType": "release"
+    }
   }
 }
