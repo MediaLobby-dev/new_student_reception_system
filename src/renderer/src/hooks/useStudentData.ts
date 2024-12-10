@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { studentIdAtom, isLoadingAtom, messageCode, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom } from "../atom";
-import { StudentData } from "../types";
+import { StudentData } from "../../../types/studentData";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
 import { MessageCode } from "../../../types/errorCode";

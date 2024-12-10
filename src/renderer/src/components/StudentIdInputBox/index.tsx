@@ -33,7 +33,7 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
     setMessageKeyCode(null);
     // 学籍番号をリセット
     setStudentId('');
-    
+
     // フォーカスをリセット
     handleResrtInputStudentId();
   };
@@ -45,9 +45,8 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
     // 受付済みの場合
     else if (studentData.receptionStatus) return true;
     // 除外メッセージの場合
-    else if (messageKeyCode === 'UNABLE_RECEPTION') return true;
-    else if (messageKeyCode === 'PURCHASED_RECOMMENDED_MACHINE') return true;
-    else if (messageKeyCode === 'NON_RECOMMENDED_MACHINE') return true;
+    else if (messageKeyCode === 'UNABLE_RECEPTION' || messageKeyCode === 'PURCHASED_RECOMMENDED_MACHINE' || messageKeyCode === 'NON_RECOMMENDED_MACHINE') return true;
+    else if (messageKeyCode === 'INVALID_STUDENT_NUMBER' || messageKeyCode === 'NOT_FOUND_STUDENT' || messageKeyCode === 'INTERNAL_SERVER_ERROR') return true
     else return false;
   }
 

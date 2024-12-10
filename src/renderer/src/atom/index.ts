@@ -1,4 +1,4 @@
-import { StudentData } from "@renderer/types";
+import { StudentData } from "../../../types/studentData";
 import { MessageCode } from "src/types/errorCode";
 import { atom } from "jotai";
 import { atomWithReset } from "jotai/utils";
