@@ -74,12 +74,12 @@ ipcMain.handle('initializeFirebase', async () => initializeFirebase());
 ipcMain.handle('saveSdk', async () => saveSdk());
 
 // [IPC] 生徒情報取得
-ipcMain.handle('getStudentData', async (event: IpcMainInvokeEvent, studentId: string) => getStudentData(studentId));
+ipcMain.handle('getStudentData', async (_event: IpcMainInvokeEvent, studentId: string) => getStudentData(studentId));
 
 // [IPC] 生徒受付
-ipcMain.handle('acceptReception', async (event: IpcMainInvokeEvent, studentId: string) => acceptReception(studentId));
+ipcMain.handle('acceptReception', async (_event: IpcMainInvokeEvent, studentId: string) => acceptReception(studentId));
 
 // [IPC] 備考欄編集
-ipcMain.handle('editRemarks', async (event: IpcMainInvokeEvent, studentId: string, newRemark: string) => editRemarks(studentId, newRemark));
+ipcMain.handle('editRemarks', async (_event: IpcMainInvokeEvent, studentId: string, newRemark: string) => editRemarks(studentId, newRemark));
 // [IPC] 受付キャンセル
-ipcMain.handle('cancelReception', async (event: IpcMainInvokeEvent, studentId: string) => cancelReception(studentId));
+ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: string) => cancelReception(studentId));

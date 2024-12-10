@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { useSetAtom } from 'jotai';
 import { getDepartmentColor } from './functions/getDepartmentColor';
 import RemarkInputBox from '../RemarkInputBox';
 import styles from './styles.module.scss';
 import Button from '../Button';
 import Modal from 'react-modal';
-
-import { studentIdAtom } from '../../atom';
 import { useStudentData } from '../../hooks/useStudentData';
 import { useCancelReception } from '../../hooks/useCancelReception';
 
@@ -30,7 +27,6 @@ type UserViewProps = {
 };
 
 export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
-  const setStudentId = useSetAtom(studentIdAtom);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -46,18 +42,13 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
     setIsOpen(false);
   }
 
-  function reset() {
-    // 学籍番号をリセット
-    setStudentId('');
-    // フォーカスをリセット
-    handleResrtInputStudentId();
-  }
 
   async function onClickCancelReception() {
     setIsLoadingModal(true);
     cancelReception();
     setIsLoadingModal(false);
     closeModal();
+    handleResrtInputStudentId();
   }
 
   // データが存在しない

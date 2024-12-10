@@ -27,7 +27,7 @@ export const studentDataAtom = atom(
             isDeprecatedPC: get(isDeprecatedPCAtom),
         };
     },
-    (get, set, update: StudentData) => {
+    (_get, set, update: StudentData) => {
         set(studentNameAtom, update.studentName);
         set(kanaAtom, update.kana);
         set(departmentAtom, update.department);
