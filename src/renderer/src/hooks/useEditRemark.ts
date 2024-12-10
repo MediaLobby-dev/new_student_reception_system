@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
-import {remarkAtom, errorKey, studentIdAtom} from "../atom";
-import { ErrorCode } from "../../../types/errorCode";
+import {remarkAtom, messageCode, studentIdAtom} from "../atom";
+import { MessageCode } from "../../../types/errorCode";
 import { StudentData } from "../../../types/studentData";
 import { Response } from "../../../types/response";
 
@@ -12,7 +12,7 @@ export const useEditRemark = () => {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
 
-    const setErrorKeyCode = useSetAtom(errorKey);
+    const setMessageKeyCode = useSetAtom(messageCode);
 
     const updateRemark = () => {
         console.log(studentId, remark);
@@ -21,15 +21,15 @@ export const useEditRemark = () => {
         .then((res: Response<StudentData>) => {
             if (res.status) {
                 setIsSuccess(true);
-                setErrorKeyCode(ErrorCode.SUCCESSFUL_EDIT_REMARK);
+                setMessageKeyCode(MessageCode.SUCCESSFUL_EDIT_REMARK);
             } else {
-                setErrorKeyCode(ErrorCode.INTERNAL_SERVER_ERROR);
+                setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
             }
         })
         .catch((err) => {
             console.error(err);
             setIsError(true);
-            setErrorKeyCode(ErrorCode.INTERNAL_SERVER_ERROR);
+            setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
         })
         .finally(() => {
         });

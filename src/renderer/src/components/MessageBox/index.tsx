@@ -1,54 +1,54 @@
 import { useAtomValue } from 'jotai';
-import { errorKey } from '../../atom';
-import { ErrorCode, ErrorCodeList } from '../../../../types/errorCode';
+import { messageCode } from '../../atom';
+import { MessageCode, MessageCodeList } from '../../../../types/errorCode';
 
 export default function MessageBox() {
 
-  const errorKeyCode = useAtomValue(errorKey);
+  const messageKeyCode = useAtomValue(messageCode);
 
-  switch (errorKeyCode) {
+  switch (messageKeyCode) {
     // 成功系
-    case ErrorCode.SUCCESSFUL_GET_STUDENT_DATA:
-    case ErrorCode.SUCCESSFUL_CANCEL_RECEPTION:
-    case ErrorCode.SUCCESSFUL_RECEPTION:
-    case ErrorCode.SUCCESSFUL_EDIT_REMARK:
+    case MessageCode.SUCCESSFUL_GET_STUDENT_DATA:
+    case MessageCode.SUCCESSFUL_CANCEL_RECEPTION:
+    case MessageCode.SUCCESSFUL_RECEPTION:
+    case MessageCode.SUCCESSFUL_EDIT_REMARK:
       return (
         <div className="container py-2">
           <div className="alert alert-success" role="alert">
-            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
           </div>
         </div>
       )
 
-    case ErrorCode.INVALID_STUDENT_NUMBER:
+    case MessageCode.INVALID_STUDENT_NUMBER:
       return (
         <div className="container py-2">
           <div className="alert alert-info" role="alert">
-            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
-            <p className="mb-0">{ErrorCodeList[errorKeyCode].subMessage}</p>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].subMessage}</p>
           </div>
         </div>
       )
 
-    case ErrorCode.BAD_REQUEST:
-    case ErrorCode.UNABLE_RECEPTION:
-    case ErrorCode.NOT_FOUND_STUDENT:
-    case ErrorCode.INTERNAL_SERVER_ERROR:
+    case MessageCode.BAD_REQUEST:
+    case MessageCode.UNABLE_RECEPTION:
+    case MessageCode.NOT_FOUND_STUDENT:
+    case MessageCode.INTERNAL_SERVER_ERROR:
       return (
         <div className="container py-2">
           <div className="alert alert-danger" role="alert">
-            <p className="mb-0">{ErrorCodeList[errorKeyCode].message}</p>
-            <p className="mb-0">{ErrorCodeList[errorKeyCode].subMessage}</p>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].subMessage}</p>
           </div>
         </div>
       )
 
-      case ErrorCode.PURCHASED_RECOMMENDED_MACHINE:
-      case ErrorCode.NON_RECOMMENDED_MACHINE:
+      case MessageCode.PURCHASED_RECOMMENDED_MACHINE:
+      case MessageCode.NON_RECOMMENDED_MACHINE:
         return (
           <div className="alert alert-danger" role="alert">
-            <h4 className="alert-heading fw-bold">{ErrorCodeList[errorKeyCode].message}</h4>
-            <p>{ErrorCodeList[errorKeyCode].subMessage}</p>
+            <h4 className="alert-heading fw-bold">{MessageCodeList[messageKeyCode].message}</h4>
+            <p>{MessageCodeList[messageKeyCode].subMessage}</p>
           </div>
         )
 

@@ -1,14 +1,14 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { studentIdAtom, isLoadingAtom, errorKey, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom } from "../atom";
+import { studentIdAtom, isLoadingAtom, messageCode, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom } from "../atom";
 import { StudentData } from "../types";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
-import { ErrorCode } from "../../../types/errorCode";
+import { MessageCode } from "../../../types/errorCode";
 
 export const useStudentData = () => {
     const studentId = useAtomValue(studentIdAtom);
     const setIsLoading = useSetAtom(isLoadingAtom);
-    const setErrorKeyCode = useSetAtom(errorKey);
+    const setMessageKeyCode = useSetAtom(messageCode);
     const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
 
     const [studentData, setStudentData] = useAtom(studentDataAtom);
@@ -18,7 +18,7 @@ export const useStudentData = () => {
         const fetchData = async () => {
 
         if (studentId.length !== 8) {
-            setErrorKeyCode(ErrorCode.INVALID_STUDENT_NUMBER);
+            setMessageKeyCode(MessageCode.INVALID_STUDENT_NUMBER);
             return;
         }
 
@@ -30,35 +30,40 @@ export const useStudentData = () => {
         window.electron.ipcRenderer
             .invoke("getStudentData", studentId)
             .then((res: Response<StudentData>) => {
-                console.log(res);
+                // エラーが発生した場合
+                if (!res) {
+                    setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
+                    return;
+                }
+
                 // 案内所対応が必要な場合
                 if (res.status && res.data.isNeedNotify) {
-                    setErrorKeyCode(ErrorCode.UNABLE_RECEPTION);
+                    setMessageKeyCode(MessageCode.UNABLE_RECEPTION);
                     return;
                 }
 
                 // 非推奨PC受付時に推奨PCの人が来た場合
                 if (res.status && res.data.isDeprecatedPC && isDeprecatedPCReception) {
-                    setErrorKeyCode(ErrorCode.PURCHASED_RECOMMENDED_MACHINE);
+                    setMessageKeyCode(MessageCode.PURCHASED_RECOMMENDED_MACHINE);
                     return;
                 }
 
                 // 推奨PC受付時に非推奨PCの人が来た場合
                 if (res.status && !res.data.isDeprecatedPC && !isDeprecatedPCReception) {
-                    setErrorKeyCode(ErrorCode.NON_RECOMMENDED_MACHINE);
+                    setMessageKeyCode(MessageCode.NON_RECOMMENDED_MACHINE);
                     return;
                 }
 
                 if (res.status && res.data) {
                     setStudentData(res.data);
-                    setErrorKeyCode(ErrorCode.SUCCESSFUL_GET_STUDENT_DATA);
+                    setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
                 } else {
-                    setErrorKeyCode(ErrorCode.NOT_FOUND_STUDENT);
+                    setMessageKeyCode(MessageCode.NOT_FOUND_STUDENT);
                 }
             })
             .catch((err) => {
                 console.error(err);
-                setErrorKeyCode(ErrorCode.INTERNAL_SERVER_ERROR);
+                setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
             })
             .finally(() => {
                 setIsLoading({

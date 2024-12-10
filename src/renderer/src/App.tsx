@@ -6,10 +6,13 @@ import Loading from './components/Loading';
 import { useAtomValue } from 'jotai';
 import { isLoadingAtom, studentIdAtom } from './atom';
 import { useRef } from 'react';
+import { useInitializeFirebase } from './hooks/useInitializeFirebase';
 
 function App(): JSX.Element {
   const studentId = useAtomValue(studentIdAtom);
   const isLoading = useAtomValue(isLoadingAtom);
+
+  useInitializeFirebase();
 
   const inputEl = useRef<HTMLInputElement | null>(null);
   const handleResrtInputStudentId = () => {

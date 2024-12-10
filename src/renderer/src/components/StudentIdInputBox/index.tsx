@@ -2,18 +2,18 @@ import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
 import Button from '../Button';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isDeprecatedPCReceptionAtom, isLoadingAtom, errorKey, studentIdAtom } from '../../atom';
+import { isDeprecatedPCReceptionAtom, isLoadingAtom, messageCode, studentIdAtom, studentDataAtom } from '../../atom';
 import { forwardRef } from 'react';
-import { ErrorCode } from '../../../../types/errorCode';
 import { useAcceptReception } from '../../hooks/useAcceptReception';
 
 type StudentIdInputBoxProps = {
   handleResrtInputStudentId: () => void;
 };
 
-const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
-  const setStudentId = useSetAtom(studentIdAtom);
-  const [errorKeyCode, setErrorKeyCode] = useAtom(errorKey);
+const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
+  const [studentId, setStudentId] = useAtom(studentIdAtom);
+  const studentData = useAtomValue(studentDataAtom);
+  const [messageKeyCode, setMessageKeyCode] = useAtom(messageCode);
   const setIsLoading = useSetAtom(isLoadingAtom);
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
   const { acceptReception } = useAcceptReception();
@@ -30,17 +30,25 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdI
   };
 
   const inputReset = () => {
-    setErrorKeyCode(null);
+    setMessageKeyCode(null);
     // 学籍番号をリセット
     setStudentId('');
+    
     // フォーカスをリセット
     handleResrtInputStudentId();
   };
 
   // 確認済みボタンの無効化
   function disabledCheck() {
-    if(errorKeyCode === ErrorCode.SUCCESSFUL_GET_STUDENT_DATA) return false;
-    return true;
+    // 学籍番号が入力されていない場合
+    if (!studentId) return true;
+    // 受付済みの場合
+    else if (studentData.receptionStatus) return true;
+    // 除外メッセージの場合
+    else if (messageKeyCode === 'UNABLE_RECEPTION') return true;
+    else if (messageKeyCode === 'PURCHASED_RECOMMENDED_MACHINE') return true;
+    else if (messageKeyCode === 'NON_RECOMMENDED_MACHINE') return true;
+    else return false;
   }
 
   async function handlReceptionCheck() {

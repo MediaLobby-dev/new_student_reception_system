@@ -4,9 +4,14 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { BASE_PATH } from './index';
 import { Response } from '../types/response';
+import { MessageCode } from '../types/errorCode';
 
 export const isExsistsFirebaseSDKJson = (): boolean => {
-  return readFileSync(join(BASE_PATH, 'config', 'sdk.json')).length > 0;
+  try {
+    return readFileSync(join(BASE_PATH, 'config', 'sdk.json')).length > 0;
+  } catch (error) {
+    return false;
+  }
 };
 
 export const initializeFirebase = (): Response<null> => {
@@ -15,8 +20,8 @@ export const initializeFirebase = (): Response<null> => {
       status: false,
       data: null,
       error: {
-        code: 400,
-        message: 'SDK not found',
+        code: MessageCode.FAILED_FIREBASE_SDK_READ,
+        message: 'Firebase SDK file is not exists.',
       },
     };
   }
@@ -42,7 +47,7 @@ export const initializeFirebase = (): Response<null> => {
       status: false,
       data: null,
       error: {
-        code: 500,
+        code: MessageCode.FAILED_FIREBASE_SDK_READ,
         message: (error as Error).message,
       },
     };

@@ -1,4 +1,4 @@
-export enum ErrorCode {
+export enum MessageCode {
     SUCCESSFUL_GET_STUDENT_DATA = "SUCCESSFUL_GET_STUDENT_DATA",
     SUCCESSFUL_EDIT_REMARK = "SUCCESSFUL_EDIT_REMARK",
     SUCCESSFUL_CANCEL_RECEPTION = "SUCCESSFUL_CANCEL_RECEPTION",
@@ -17,14 +17,14 @@ export enum ErrorCode {
 
 }
 
-type ErrorCodeLists = {
-    [key in ErrorCode]: {
+type MessageCodeLists = {
+    [key in MessageCode]: {
         message: string;
         subMessage?: string;
     };
 };
 
-export const ErrorCodeList: ErrorCodeLists = {
+export const MessageCodeList: MessageCodeLists = {
     "SUCCESSFUL_GET_STUDENT_DATA": {
         message: 'データ取得に成功しました。',
     },

@@ -1,7 +1,7 @@
 import { Response } from '../../types/response';
 import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
-import { ErrorCode } from '../../types/errorCode';
+import { MessageCode } from '../../types/errorCode';
 
 export const getStudentData = async (studentId: string): Promise<Response<StudentData | null>> => {
   const db = firestore();
@@ -15,7 +15,7 @@ export const getStudentData = async (studentId: string): Promise<Response<Studen
       status: false,
       data: null,
       error:{
-        code: ErrorCode.NOT_FOUND_STUDENT,
+        code: MessageCode.NOT_FOUND_STUDENT,
         message: '対象の学籍番号の学生が見つかりませんでした'
       }
     };

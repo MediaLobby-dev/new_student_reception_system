@@ -1,5 +1,5 @@
 import { StudentData } from "@renderer/types";
-import { ErrorCode } from "src/types/errorCode";
+import { MessageCode } from "src/types/errorCode";
 import { atom } from "jotai";
 import { atomWithReset } from "jotai/utils";
 
@@ -54,7 +54,7 @@ export const resetStudentData = atom(null, (_get, set) => {
 export const isDeprecatedPCReceptionAtom = atom<boolean>(false);
 
 // ResponseCode
-export const errorKey = atom<ErrorCode | null>(null);
+export const messageCode = atom<MessageCode | null>(null);
 
 // Loading
 export const isLoadingAtom = atom<{ status: boolean, message: string }>({ status: false, message: '' });
