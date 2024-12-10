@@ -3,13 +3,13 @@ import Footer from './components/Footer';
 import UserTable from './components/UserView';
 import MessageBox from './components/MessageBox';
 import Loading from './components/Loading';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { isLoadingAtom, studentIdAtom } from './atom';
 import { useRef } from 'react';
 
 function App(): JSX.Element {
   const studentId = useAtomValue(studentIdAtom);
-  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
+  const isLoading = useAtomValue(isLoadingAtom);
 
   // useEffect(() => {
   //   setIsLoading({
@@ -35,7 +35,7 @@ function App(): JSX.Element {
       <div className="container py-4">
         <StudentIdInputBox ref={inputEl} handleResrtInputStudentId={handleResrtInputStudentId} />
         <MessageBox />
-        <button
+        {/* <button
           type="button"
           className="btn btn-primary"
           onClick={() => {
@@ -56,7 +56,7 @@ function App(): JSX.Element {
           }}
         >
           Check Firebase
-        </button>
+        </button> */}
         {isLoading.status && <Loading message={isLoading.message} />}
         {studentId && <UserTable handleResrtInputStudentId={handleResrtInputStudentId} />}
         <Footer />

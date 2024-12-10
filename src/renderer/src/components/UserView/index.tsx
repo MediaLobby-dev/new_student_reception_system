@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSetAtom } from 'jotai';
-
+import { getDepartmentColor } from './functions/getDepartmentColor';
 import RemarkInputBox from '../RemarkInputBox';
 import styles from './styles.module.scss';
-import { departmentColorList } from '../../types';
 import Button from '../Button';
 import Modal from 'react-modal';
 
 import { studentIdAtom } from '../../atom';
+import { useStudentData } from '@renderer/hooks/useStudentData';
 
 const customStyles = {
   overlay: {
@@ -24,60 +24,16 @@ const customStyles = {
   },
 };
 
-const colorList: departmentColorList = [
-  {
-    departmentName: 'BS',
-    styleName: styles.bs,
-  },
-  {
-    departmentName: 'MS',
-    styleName: styles.ms,
-  },
-  {
-    departmentName: 'CS',
-    styleName: styles.cs,
-  },
-  {
-    departmentName: 'ES',
-    styleName: styles.es,
-  },
-  {
-    departmentName: 'HS',
-    styleName: styles.hs,
-  },
-  {
-    departmentName: 'DS',
-    styleName: styles.ds,
-  },
-];
-
-function getDepartmentColor(departmentName: string) {
-  const color = colorList.find((element) => element.departmentName === departmentName);
-  if (!color) return styles.departmentdefault;
-  return color?.styleName;
-}
-
 type UserViewProps = {
   handleResrtInputStudentId: () => void;
 };
 
 export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
   const setStudentId = useSetAtom(studentIdAtom);
+  const { data } = useStudentData();
 
   const [isLoadingModal, setIsLoadingModal] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  const data = {
-    studentId: 'B1234567',
-    studentName: '山田太郎',
-    kana: 'ヤマダタロウ',
-    department: 'BS',
-    remarks: '備考欄です。',
-    supply: 'サプライ品',
-    isDeprecatedPC: false,
-    isNeedNotify: false,
-    receptionStatus: true,
-  };
 
   function openModal() {
     setIsOpen(true);
@@ -102,7 +58,7 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
   }
 
   // データが存在しない
-  if (!data) return <></>;
+  if (!data.studentName) return <></>;
 
   return (
     <div className="container">
@@ -178,10 +134,7 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
 
       <div className="row">
         <div className="col py-2">
-          <RemarkInputBox
-            studentId={data.studentId}
-            originalRemarks={data?.remarks ? data.remarks : ''}
-          />
+          <RemarkInputBox />
         </div>
       </div>
 

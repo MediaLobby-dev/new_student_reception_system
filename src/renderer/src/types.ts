@@ -1,5 +1,4 @@
 export type StudentData = {
-  studentId: string; // 学籍番号
   studentName: string; // 氏名
   kana: string; // カナ
   department: string; // 学科

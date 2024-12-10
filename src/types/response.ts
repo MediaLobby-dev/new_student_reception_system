@@ -1,8 +1,10 @@
 export interface Response<T> {
   status: boolean;
   data: T;
-  error?: {
-    code: number;
-    message: string;
-  };
+  error?: ErrorObject;
+}
+
+export interface ErrorObject {
+  code: number;
+  message: string;
 }

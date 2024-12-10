@@ -41,6 +41,7 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId } : StudentIdI
       // フォーカスをリセット
       handleResrtInputStudentId();
     }
+    console.log(e.target.value);
     setStudentId(e.target.value);
   };
 

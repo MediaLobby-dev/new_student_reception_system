@@ -1,33 +1,9 @@
-import { useState } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useEditRemark } from '../../hooks/useEditRemark';
 import styles from './styles.module.scss';
 import Button from '../Button';
 
-import { statusCodeAtom, studentIdAtom } from '../../atom';
-
-export default function RemarkInputBox({
-  originalRemarks,
-}: {
-  studentId: string;
-  originalRemarks: string;
-}) {
-  const [remarks, setRemarks] = useState<string>(originalRemarks);
-  const studentId = useAtomValue(studentIdAtom);
-  const [statusCode, setStatusCode] = useAtom(statusCodeAtom);
-
-  // const editRemarks = (studentId: string, remarks: string) => {
-  //   console.log('editRemarks');
-  //   return true;
-  // };
-
-  async function updateRemarks(): Promise<void> {
-    // const res = await editRemarks(studentId, remarks);
-    // if (res === true) {
-    //   setStatusCode(201);
-    // } else {
-    //   setStatusCode(500);
-    // }
-  }
+export default function RemarkInputBox() {
+  const { isSuccess, isError, remark, setRemark, updateRemark } = useEditRemark();
 
   return (
     <>
@@ -37,25 +13,19 @@ export default function RemarkInputBox({
           <textarea
             className="form-control"
             rows={3}
-            value={remarks}
+            value={remark}
             onChange={(e) => {
-              setRemarks(e.target.value);
+              setRemark(e.target.value);
             }}
           ></textarea>
 
           <div className={styles.controlBox}>
-            <Button status="primary" onClick={() => updateRemarks()}>
+            <Button status="primary" onClick={() => updateRemark()}>
               更新
             </Button>
             <div className={styles.statusMsg}>
-              {statusCode === 201 ? <span className={styles.success}>更新しました</span> : <></>}
-              {statusCode === 500 ? (
-                <span className={styles.err}>
-                  更新に失敗しました。画面上部のメッセージをご確認ください。
-                </span>
-              ) : (
-                <></>
-              )}
+              {isSuccess && <span className={styles.success}>更新しました</span> }
+              {isError && <span className={styles.err}>更新に失敗しました。画面上部のメッセージをご確認ください。</span> }
             </div>
           </div>
         </div>

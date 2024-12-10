@@ -12,7 +12,6 @@ export const getStudentData = async (studentId: string): Promise<Response<Studen
   return {
     status: true,
     data: {
-        studentId: res?.studentId,
         studentName: res?.studentName,
         kana: res?.kana,
         department: res?.department,
