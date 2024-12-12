@@ -26,6 +26,7 @@
     "classnames": "^2.5.1",
     "electron-updater": "^6.1.7",
     "firebase-admin": "^13.0.1",
+    "howler": "^2.2.4",
     "jotai": "^2.10.3",
     "react-icons": "^5.1.0",
     "react-modal": "^3.16.1",
@@ -37,6 +38,7 @@
     "@electron-toolkit/eslint-config-ts": "^1.0.1",
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@types/bootstrap": "^5.2.10",
+    "@types/howler": "^2.2.12",
     "@types/node": "^18.19.9",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
@@ -54,8 +56,10 @@
   },
   "build": {
     "appId": "local.mel-tut.new-student-reception-system",
+    "productName": "新入生受付システム",
     "files": [
-      "out/**/*"
+      "out/**/*",
+      "src/renderer/public/audio/**/*"
     ],
     "publish": {
       "provider": "github",

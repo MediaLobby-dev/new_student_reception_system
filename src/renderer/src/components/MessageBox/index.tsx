@@ -31,7 +31,6 @@ export default function MessageBox() {
       )
 
     case MessageCode.BAD_REQUEST:
-    case MessageCode.UNABLE_RECEPTION:
     case MessageCode.NOT_FOUND_STUDENT:
     case MessageCode.INTERNAL_SERVER_ERROR:
       return (
@@ -43,12 +42,15 @@ export default function MessageBox() {
         </div>
       )
 
+      case MessageCode.UNABLE_RECEPTION:
       case MessageCode.PURCHASED_RECOMMENDED_MACHINE:
       case MessageCode.NON_RECOMMENDED_MACHINE:
         return (
           <div className="alert alert-danger" role="alert">
-            <h4 className="alert-heading fw-bold">{MessageCodeList[messageKeyCode].message}</h4>
-            <p>{MessageCodeList[messageKeyCode].subMessage}</p>
+            <h4 className="alert-heading fw-bold">{MessageCodeList[messageKeyCode].title}</h4>
+            <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
+            <hr />
+            <span>{MessageCodeList[messageKeyCode].subMessage}</span>
           </div>
         )
 

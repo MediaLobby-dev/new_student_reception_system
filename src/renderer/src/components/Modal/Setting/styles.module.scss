@@ -1,4 +1,5 @@
 .table{
+    width: auto;
     border-collapse: collapse;
     border-spacing: 0;
     border: 1px solid #e0e0e0;
@@ -27,6 +28,16 @@
     }
     tr:hover{
         background-color: #f9f9f9;
+    }
+
+    .adminMode{
+        // 薄い赤い背景
+        background-color: #ffcccc;
+        font-weight: 400;
+        color: #666;
+        &:hover{
+            background-color: #ffcccc;
+        }
     }
 }
 

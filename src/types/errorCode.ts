@@ -19,6 +19,7 @@ export enum MessageCode {
 
 type MessageCodeLists = {
     [key in MessageCode]: {
+        title?: string;
         message: string;
         subMessage?: string;
     };
@@ -42,14 +43,17 @@ export const MessageCodeList: MessageCodeLists = {
         subMessage: 'エラーが解決しない場合は、開発者にお問い合わせください。',
     },
     "UNABLE_RECEPTION": {
+        title: "告知事項あり",
         message: '受付できません。所定の事務処理が完了していない可能性があります。',
         subMessage: '案内所へ誘導してください。',
     },
     "PURCHASED_RECOMMENDED_MACHINE": {
+        title: "推奨機です",
         message: '推奨機を購入済みの学生です。',
         subMessage: '推奨機ガイダンス会場へ誘導してください。',
     },
     "NON_RECOMMENDED_MACHINE": {
+        title: "非推奨機です",
         message: '非推奨機をお持ちの学生です。',
         subMessage: '非推奨機ガイダンス会場へ誘導してください。',
     },

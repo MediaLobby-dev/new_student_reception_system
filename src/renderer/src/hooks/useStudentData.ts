@@ -4,6 +4,8 @@ import { StudentData } from "../../../types/studentData";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
 import { MessageCode } from "../../../types/errorCode";
+import { nonRecomendPc, recommendedPcStudent, unableReception } from "../sound";
+
 
 export const useStudentData = () => {
     const studentId = useAtomValue(studentIdAtom);
@@ -14,63 +16,67 @@ export const useStudentData = () => {
     const [studentData, setStudentData] = useAtom(studentDataAtom);
     const resetAll = useSetAtom(resetStudentData);
 
+
     useEffect(() => {
         const fetchData = async () => {
 
-        if (studentId.length !== 8) {
-            setMessageKeyCode(MessageCode.INVALID_STUDENT_NUMBER);
-            return;
-        }
+            if (studentId.length !== 8) {
+                setMessageKeyCode(MessageCode.INVALID_STUDENT_NUMBER);
+                return;
+            }
 
-        setIsLoading({
-            status: true,
-            message: "検索中...",
-        });
-
-        window.electron.ipcRenderer
-            .invoke("getStudentData", studentId)
-            .then((res: Response<StudentData>) => {
-                // エラーが発生した場合
-                if (!res) {
-                    setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
-                    return;
-                }
-
-                // 案内所対応が必要な場合
-                if (res.status && res.data.isNeedNotify) {
-                    setMessageKeyCode(MessageCode.UNABLE_RECEPTION);
-                    return;
-                }
-
-                // 非推奨PC受付時に推奨PCの人が来た場合
-                if (res.status && res.data.isDeprecatedPC && isDeprecatedPCReception) {
-                    setMessageKeyCode(MessageCode.PURCHASED_RECOMMENDED_MACHINE);
-                    return;
-                }
-
-                // 推奨PC受付時に非推奨PCの人が来た場合
-                if (res.status && !res.data.isDeprecatedPC && !isDeprecatedPCReception) {
-                    setMessageKeyCode(MessageCode.NON_RECOMMENDED_MACHINE);
-                    return;
-                }
-
-                if (res.status && res.data) {
-                    setStudentData(res.data);
-                    setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
-                } else {
-                    setMessageKeyCode(MessageCode.NOT_FOUND_STUDENT);
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
-            })
-            .finally(() => {
-                setIsLoading({
-                    status: false,
-                    message: "",
-                });
+            setIsLoading({
+                status: true,
+                message: "検索中...",
             });
+
+            window.electron.ipcRenderer
+                .invoke("getStudentData", studentId)
+                .then(async (res: Response<StudentData>) => {
+                    // エラーが発生した場合
+                    if (!res) {
+                        setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
+                        return;
+                    }
+
+                    // 案内所対応が必要な場合
+                    if (res.status && res.data.isNeedNotify) {
+                        setMessageKeyCode(MessageCode.UNABLE_RECEPTION);
+                        unableReception();
+                        return;
+                    }
+
+                    // 非推奨PC受付時に推奨PCの人が来た場合
+                    if (res.status && !res.data.isDeprecatedPC && isDeprecatedPCReception) {
+                        setMessageKeyCode(MessageCode.PURCHASED_RECOMMENDED_MACHINE);
+                        recommendedPcStudent();
+                        return;
+                    }
+
+                    // 推奨PC受付時に非推奨PCの人が来た場合
+                    if (res.status && res.data.isDeprecatedPC && !isDeprecatedPCReception) {
+                        setMessageKeyCode(MessageCode.NON_RECOMMENDED_MACHINE);
+                        nonRecomendPc();
+                        return;
+                    }
+
+                    if (res.status && res.data) {
+                        setStudentData(res.data);
+                        setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
+                    } else {
+                        setMessageKeyCode(MessageCode.NOT_FOUND_STUDENT);
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
+                })
+                .finally(() => {
+                    setIsLoading({
+                        status: false,
+                        message: "",
+                    });
+                });
         }
 
         resetAll();

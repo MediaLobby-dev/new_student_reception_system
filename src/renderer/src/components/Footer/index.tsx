@@ -35,6 +35,9 @@ export default function Footer() {
               <div className={styles.small}>
                 ※外観・仕様は開発中または改良のため、各種仕様は予告なく変更される場合があります。
               </div>
+              <div className={styles.small + ' mt-1'}>
+                本システムの音声案内は<a href="https://vidweb.co.jp/voicegate/" target="_blank" rel="noreferrer">ボイスゲート</a>を利用しています。
+              </div>
             </div>
             <div className="col-sm-6">
               <div className={styles.toolBox}>

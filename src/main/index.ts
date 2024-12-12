@@ -10,6 +10,7 @@ import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
 
 export const BASE_PATH = app.getPath('home');
+app.commandLine.appendSwitch('--autoplay-policy','no-user-gesture-required');
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
