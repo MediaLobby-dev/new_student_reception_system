@@ -11,6 +11,7 @@
     font-size: 14px;
     color: #333;
     text-align: left;
+
     th, td{
         padding: 10px 15px;
         border-bottom: 1px solid #e0e0e0;
@@ -18,20 +19,22 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     th{
         background-color: #f5f5f5;
         font-weight: 400;
         color: #666;
     }
+
     td{
         color: #333;
     }
+
     tr:hover{
         background-color: #f9f9f9;
     }
 
     .adminMode{
-        // 薄い赤い背景
         background-color: #ffcccc;
         font-weight: 400;
         color: #666;

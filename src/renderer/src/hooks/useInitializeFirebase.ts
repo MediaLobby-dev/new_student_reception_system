@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react';
+import { initializedFirebaseAtom } from '../atom';
+import { useAtom } from 'jotai';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 export const useInitializeFirebase = () => {
-    const [isInitialized, setIsInitialized] = useState<boolean>(false);
+    const [isInitialized, setIsInitialized] = useAtom(initializedFirebaseAtom);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        let interval: NodeJS.Timeout;
+
         const initializeFirebase = async () => {
             try {
                 const res = await window.electron.ipcRenderer.invoke("initializeFirebase");
-                console.log(res);
                 if (res && res.status) {
                     setIsInitialized(true);
+                    clearInterval(interval);
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -21,16 +26,20 @@ export const useInitializeFirebase = () => {
             } catch (error) {
                 console.error(error);
             }
+            setIsLoading(false);
         };
-    
-        const timer = setTimeout(() => {
+
+        interval = setInterval(() => {
             initializeFirebase();
         }, 3000);
-    
+
         return () => {
-            clearTimeout(timer);
+            clearInterval(interval);
         };
     }, []);
 
-    return { isInitialized };
+    return {
+        isLoading,
+        isInitialized,
+    };
 }

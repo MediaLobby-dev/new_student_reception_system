@@ -1,6 +1,30 @@
+import { useAtom } from "jotai";
+import { isAdminModeAtom } from "../atom";
 import Swal from "sweetalert2";
 
 export const useSetting = () => {
+    const [isAdminMode, setIsAdminMode] = useAtom(isAdminModeAtom);
+
+    const handleAdminMode = () => {
+        if(isAdminMode) {
+            Swal.fire("管理者モードの無効化", "管理者モードを無効化しました。", "success");
+            setIsAdminMode(!isAdminMode);
+            return;
+        }
+
+        Swal.fire({
+            title: "管理者モードの有効化",
+            text: "管理者モードを有効化します。よろしいですか？",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "有効化",
+            cancelButtonText: "キャンセル",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setIsAdminMode(!isAdminMode);
+            }
+        });
+    };
 
     const openAndSaveSDKFile = () => {
         window.electron.ipcRenderer.invoke("saveSdk").then((res) => {
@@ -22,6 +46,8 @@ export const useSetting = () => {
     };
 
     return {
+        isAdminMode,
+        handleAdminMode,
         openAndSaveSDKFile,
     };
 };

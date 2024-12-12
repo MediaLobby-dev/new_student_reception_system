@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { studentIdAtom, isLoadingAtom, messageCode, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom } from "../atom";
+import { studentIdAtom, isLoadingAtom, messageCode, studentDataAtom, resetStudentData, isDeprecatedPCReceptionAtom, isAdminModeAtom } from "../atom";
 import { StudentData } from "../../../types/studentData";
 import { Response } from "../../../types/response";
 import { useEffect } from "react";
@@ -12,10 +12,34 @@ export const useStudentData = () => {
     const setIsLoading = useSetAtom(isLoadingAtom);
     const setMessageKeyCode = useSetAtom(messageCode);
     const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
-
+    const isAdminMode = useAtomValue(isAdminModeAtom);
     const [studentData, setStudentData] = useAtom(studentDataAtom);
     const resetAll = useSetAtom(resetStudentData);
 
+
+    // \AdminMode以外の場合の共通処理
+    const generalCheckCase = (res: Response<StudentData>) => {
+        // 案内所対応が必要な場合
+        if (res.status && res.data.isNeedNotify) {
+            setMessageKeyCode(MessageCode.UNABLE_RECEPTION);
+            unableReception();
+            return;
+        }
+
+        // 非推奨PC受付時に推奨PCの人が来た場合
+        if (res.status && !res.data.isDeprecatedPC && isDeprecatedPCReception) {
+            setMessageKeyCode(MessageCode.PURCHASED_RECOMMENDED_MACHINE);
+            recommendedPcStudent();
+            return;
+        }
+
+        // 推奨PC受付時に非推奨PCの人が来た場合
+        if (res.status && res.data.isDeprecatedPC && !isDeprecatedPCReception) {
+            setMessageKeyCode(MessageCode.NON_RECOMMENDED_MACHINE);
+            nonRecomendPc();
+            return;
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,25 +63,9 @@ export const useStudentData = () => {
                         return;
                     }
 
-                    // 案内所対応が必要な場合
-                    if (res.status && res.data.isNeedNotify) {
-                        setMessageKeyCode(MessageCode.UNABLE_RECEPTION);
-                        unableReception();
-                        return;
-                    }
-
-                    // 非推奨PC受付時に推奨PCの人が来た場合
-                    if (res.status && !res.data.isDeprecatedPC && isDeprecatedPCReception) {
-                        setMessageKeyCode(MessageCode.PURCHASED_RECOMMENDED_MACHINE);
-                        recommendedPcStudent();
-                        return;
-                    }
-
-                    // 推奨PC受付時に非推奨PCの人が来た場合
-                    if (res.status && res.data.isDeprecatedPC && !isDeprecatedPCReception) {
-                        setMessageKeyCode(MessageCode.NON_RECOMMENDED_MACHINE);
-                        nonRecomendPc();
-                        return;
+                    // AdminMode以外の場合の共通処理
+                    if (!isAdminMode) {
+                        return generalCheckCase(res);
                     }
 
                     if (res.status && res.data) {

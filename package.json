@@ -58,8 +58,7 @@
     "appId": "local.mel-tut.new-student-reception-system",
     "productName": "新入生受付システム",
     "files": [
-      "out/**/*",
-      "src/renderer/public/audio/**/*"
+      "out/**/*"
     ],
     "publish": {
       "provider": "github",

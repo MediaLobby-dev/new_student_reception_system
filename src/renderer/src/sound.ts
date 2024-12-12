@@ -8,7 +8,7 @@ import { Howl } from 'howler';
 
 // 警告音
 const warning = new Howl({
-    src: ['/audio/warning.mp3'],
+    src: ['./audio/warning.mp3'],
     volume: 1,
 });
 
@@ -19,7 +19,7 @@ export const recommendedPcStudent = () => {
 
     setTimeout(() => {
         new Howl({
-            src: ['/audio/recommendedPcStudent.mp3'],
+            src: ['./audio/recommendedPcStudent.mp3'],
             volume: 1,
         }).play();
     }, 800);
@@ -32,7 +32,7 @@ export const nonRecomendPc = () => {
 
     setTimeout(() => {
         new Howl({
-            src: ['/audio/nonRecomendPc.mp3'],
+            src: ['./audio/nonRecomendPc.mp3'],
             volume: 1,
         }).play();
     }, 800);
@@ -45,7 +45,7 @@ export const unableReception = () => {
 
     setTimeout(() => {
         new Howl({
-            src: ['/audio/unableReception.mp3'],
+            src: ['./audio/unableReception.mp3'],
             volume: 1,
         }).play();
     }, 800);
