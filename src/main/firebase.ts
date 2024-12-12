@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { BASE_PATH } from './index';
 import { Response } from '../types/response';
-import { MessageCode } from '../types/errorCode';
+import { MessageCode } from '../types/messageCode';
 
 export const isExsistsFirebaseSDKJson = (): boolean => {
   try {

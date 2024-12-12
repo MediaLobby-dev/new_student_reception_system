@@ -1,28 +1,27 @@
-import { useState } from "react";
-import { useAtomValue, useSetAtom } from "jotai";
-import {remarkAtom, messageCode, studentIdAtom} from "../atom";
 import { MessageCode } from "../../../types/messageCode";
+import { messageCode, studentDataAtom, studentIdAtom } from "../atom";
+import { useAtomValue, useSetAtom } from "jotai";
 import { StudentData } from "../../../types/studentData";
 import { Response } from "../../../types/response";
+import { useState } from "react";
 
-export const useEditRemark = () => {
+export const useDisableNotifyFlug = () => {
     const studentId = useAtomValue(studentIdAtom);
-    const originalRemark = useAtomValue(remarkAtom);
-    const [remark, setRemark] = useState<string>(originalRemark);
+    const setStudentData = useSetAtom(studentDataAtom);
+    const setMessageKeyCode = useSetAtom(messageCode);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-
-    const setMessageKeyCode = useSetAtom(messageCode);
-
-    const updateRemark = () => {
-        console.log(studentId, remark);
+    
+    const disableNotifyFlug = () => {
         window.electron.ipcRenderer
-        .invoke("editRemarks", studentId, remark)
+        .invoke("disableNotifyFlug", studentId)
         .then((res: Response<StudentData>) => {
             if (res.status) {
                 setIsSuccess(true);
-                setMessageKeyCode(MessageCode.SUCCESSFUL_EDIT_REMARK);
+                setStudentData(res.data);
+                setMessageKeyCode(MessageCode.SUCCESSFUL_DISABLE_NOTIFY_FLUG);
             } else {
+                setIsError(true);
                 setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
             }
         })
@@ -30,17 +29,12 @@ export const useEditRemark = () => {
             console.error(err);
             setIsError(true);
             setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
-        })
-        .finally(() => {
         });
-    };
-
+    }
 
     return {
         isSuccess,
         isError,
-        updateRemark,
-        remark,
-        setRemark,
+        disableNotifyFlug,
     };
-}
+};

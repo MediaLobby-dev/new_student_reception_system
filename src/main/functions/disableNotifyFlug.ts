@@ -3,7 +3,7 @@ import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
 
-export const editRemarks = async (studentId: string, newRemark: string): Promise<Response<StudentData | null>> => {
+export const disableNotifyFlug = async(studentId: string): Promise<Response<StudentData | null>> => {
     const db = firestore();
     const docRef = db.collection('students').doc(studentId);
 
@@ -17,7 +17,7 @@ export const editRemarks = async (studentId: string, newRemark: string): Promise
             const res = docSnap.data();
 
             transaction.update(docRef, {
-                remarks: newRemark
+                isNeedNotify: false
             });
 
             return {
@@ -26,10 +26,10 @@ export const editRemarks = async (studentId: string, newRemark: string): Promise
                     studentName: res?.studentName,
                     kana: res?.kana,
                     department: res?.department,
-                    remarks: newRemark,
+                    remarks: res?.remarks,
                     supply: res?.supply,
                     isDeprecatedPC: res?.isDeprecatedPC,
-                    isNeedNotify: res?.isNeedNotify,
+                    isNeedNotify: false,
                     receptionStatus: res?.receptionStatus,
                 }
             };
@@ -45,4 +45,4 @@ export const editRemarks = async (studentId: string, newRemark: string): Promise
             }
         };
     }
-};
+}

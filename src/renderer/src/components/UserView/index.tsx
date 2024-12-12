@@ -8,6 +8,7 @@ import { useStudentData } from '../../hooks/useStudentData';
 import { useCancelReception } from '../../hooks/useCancelReception';
 import { useAtomValue } from 'jotai';
 import { isAdminModeAtom } from '../../atom';
+import { useDisableNotifyFlug } from '../../hooks/useDisableNotifyFlug';
 
 const customStyles = {
   overlay: {
@@ -34,8 +35,8 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
   const isAdminMode = useAtomValue(isAdminModeAtom);
 
   const { data } = useStudentData();
-
   const { cancelReception } = useCancelReception();
+  const { disableNotifyFlug } = useDisableNotifyFlug();
 
   function openModal() {
     setIsOpen(true);
@@ -65,15 +66,25 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
           {isAdminMode ? (
             <div className="card mb-2">
               <div className="card-body">
-                <h6 className="card-subtitle mb-2 text-body-secondary">受付可否</h6>
-                <div className={styles.acceptReceptionBox}>
-                  <Button
-                    status="success"
-                    onClick={() => {
-                     console.log("受付を許可する");
-                    }}
-                  >受付を許可する</Button>
-                </div>
+                <h6 className="card-subtitle mb-2 text-body-secondary">対応状況</h6>
+                {
+                  data?.isNeedNotify ? (
+                    <div className={styles.acceptReceptionBox}>
+                      <Button
+                        status="success"
+                        onClick={() => {
+                          disableNotifyFlug();
+                        }}
+                      >
+                        対応済にする
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className={styles.viewBox}>
+                      対応済み
+                    </div>
+                  )
+                }
               </div>
             </div>
           ) : (

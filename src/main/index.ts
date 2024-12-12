@@ -8,6 +8,7 @@ import { getStudentData } from './functions/getStudentData';
 import { acceptReception } from './functions/acceptReception';
 import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
+import { disableNotifyFlug } from './functions/disableNotifyFlug';
 
 export const BASE_PATH = app.getPath('home');
 app.commandLine.appendSwitch('--autoplay-policy','no-user-gesture-required');
@@ -82,5 +83,9 @@ ipcMain.handle('acceptReception', async (_event: IpcMainInvokeEvent, studentId: 
 
 // [IPC] 備考欄編集
 ipcMain.handle('editRemarks', async (_event: IpcMainInvokeEvent, studentId: string, newRemark: string) => editRemarks(studentId, newRemark));
+
 // [IPC] 受付キャンセル
 ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: string) => cancelReception(studentId));
+
+// [IPC] 案内所フラグ無効化
+ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) => disableNotifyFlug(studentId));

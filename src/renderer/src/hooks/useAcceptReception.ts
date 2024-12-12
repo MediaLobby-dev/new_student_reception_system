@@ -3,7 +3,7 @@ import { messageCode, receptionStatusAtom, studentIdAtom } from "../atom";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Response } from "../../../types/response";
 import { StudentData } from "../../../types/studentData";
-import { MessageCode } from "../../../types/errorCode";
+import { MessageCode } from "../../../types/messageCode";
 
 export const useAcceptReception = () => {
     const studentId = useAtomValue(studentIdAtom);

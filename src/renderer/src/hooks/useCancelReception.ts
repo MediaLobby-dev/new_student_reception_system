@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 import { Response } from "../../../types/response";
 import { StudentData } from "../../../types/studentData";
-import { MessageCode } from "../../../types/errorCode";
+import { MessageCode } from "../../../types/messageCode";
 
 export const useCancelReception = () => {
     const studentId = useAtomValue(studentIdAtom);

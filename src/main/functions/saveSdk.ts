@@ -4,7 +4,7 @@ import { BASE_PATH } from '../index';
 import { Response } from '../../types/response';
 import { BrowserWindow, dialog } from 'electron';
 import { initializeFirebase } from '../firebase';
-import { MessageCode } from '../../types/errorCode';
+import { MessageCode } from '../../types/messageCode';
 
 export const saveSdk = async (): Promise<Response<null>> => {
   const configDirPath = join(BASE_PATH, 'config');

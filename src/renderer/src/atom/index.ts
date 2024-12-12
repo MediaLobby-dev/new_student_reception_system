@@ -1,5 +1,5 @@
 import { StudentData } from "../../../types/studentData";
-import { MessageCode } from "src/types/errorCode";
+import { MessageCode } from "src/types/messageCode";
 import { atom } from "jotai";
 import { atomWithReset } from "jotai/utils";
 

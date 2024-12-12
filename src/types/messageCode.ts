@@ -3,6 +3,7 @@ export enum MessageCode {
     SUCCESSFUL_EDIT_REMARK = "SUCCESSFUL_EDIT_REMARK",
     SUCCESSFUL_CANCEL_RECEPTION = "SUCCESSFUL_CANCEL_RECEPTION",
     SUCCESSFUL_RECEPTION = "SUCCESSFUL_RECEPTION",
+    SUCCESSFUL_DISABLE_NOTIFY_FLUG = "SUCCESSFUL_DISABLE_NOTIFY_FLUG",
     BAD_REQUEST = "BAD_REQUEST",
     UNABLE_RECEPTION = "UNABLE_RECEPTION",
     PURCHASED_RECOMMENDED_MACHINE = "PURCHASED_RECOMMENDED_MACHINE",
@@ -37,6 +38,9 @@ export const MessageCodeList: MessageCodeLists = {
     },
     "SUCCESSFUL_RECEPTION": {
         message: '受付処理に成功しました。',
+    },
+    "SUCCESSFUL_DISABLE_NOTIFY_FLUG": {
+        message: '該当学生の受付を可能にしました。',
     },
     "BAD_REQUEST": {
         message: '不正なリクエストです。',

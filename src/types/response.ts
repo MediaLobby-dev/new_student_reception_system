@@ -1,4 +1,4 @@
-import { MessageCode } from "./errorCode";
+import { MessageCode } from "./messageCode";
 
 export interface Response<T> {
   status: boolean;

@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { messageCode } from '../../atom';
-import { MessageCode, MessageCodeList } from '../../../../types/errorCode';
+import { MessageCode, MessageCodeList } from '../../../../types/messageCode';
 
 export default function MessageBox() {
 
@@ -12,6 +12,7 @@ export default function MessageBox() {
     case MessageCode.SUCCESSFUL_CANCEL_RECEPTION:
     case MessageCode.SUCCESSFUL_RECEPTION:
     case MessageCode.SUCCESSFUL_EDIT_REMARK:
+    case MessageCode.SUCCESSFUL_DISABLE_NOTIFY_FLUG:
       return (
         <div className="container py-2">
           <div className="alert alert-success" role="alert">
@@ -42,19 +43,19 @@ export default function MessageBox() {
         </div>
       )
 
-      case MessageCode.UNABLE_RECEPTION:
-      case MessageCode.PURCHASED_RECOMMENDED_MACHINE:
-      case MessageCode.NON_RECOMMENDED_MACHINE:
-        return (
-          <div className="alert alert-danger" role="alert">
-            <h4 className="alert-heading fw-bold">{MessageCodeList[messageKeyCode].title}</h4>
-            <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
-            <hr />
-            <span>{MessageCodeList[messageKeyCode].subMessage}</span>
-          </div>
-        )
+    case MessageCode.UNABLE_RECEPTION:
+    case MessageCode.PURCHASED_RECOMMENDED_MACHINE:
+    case MessageCode.NON_RECOMMENDED_MACHINE:
+      return (
+        <div className="alert alert-danger" role="alert">
+          <h4 className="alert-heading fw-bold">{MessageCodeList[messageKeyCode].title}</h4>
+          <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
+          <hr />
+          <span>{MessageCodeList[messageKeyCode].subMessage}</span>
+        </div>
+      )
 
-      default:
-        return <></>;
+    default:
+      return <></>;
   }
 }
