@@ -2,7 +2,7 @@ import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
 import Button from '../Button';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isDeprecatedPCReceptionAtom, isLoadingAtom, messageCode, studentIdAtom, studentDataAtom } from '../../atom';
+import { isDeprecatedPCReceptionAtom, isLoadingAtom, messageCode, studentIdAtom, studentDataAtom, resetStudentData } from '../../atom';
 import { forwardRef } from 'react';
 import { useAcceptReception } from '../../hooks/useAcceptReception';
 
@@ -13,6 +13,7 @@ type StudentIdInputBoxProps = {
 const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdInputBoxProps, ref: React.Ref<HTMLInputElement>) => {
   const [studentId, setStudentId] = useAtom(studentIdAtom);
   const studentData = useAtomValue(studentDataAtom);
+  const resetAll = useSetAtom(resetStudentData);
   const [messageKeyCode, setMessageKeyCode] = useAtom(messageCode);
   const setIsLoading = useSetAtom(isLoadingAtom);
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
@@ -36,6 +37,9 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
 
     // フォーカスをリセット
     handleResrtInputStudentId();
+
+    // メッセージをリセット
+    resetAll();
   };
 
   // 確認済みボタンの無効化
@@ -52,16 +56,7 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
 
   async function handlReceptionCheck() {
     if (isDeprecatedPCReception) {
-      // 後にリファクタリング
-      setIsLoading({
-        status: true,
-        message: '処理中...',
-      });
       acceptReception();
-      setIsLoading({
-        status: false,
-        message: '',
-      });
     } else {
       setIsLoading({
         status: true,
@@ -73,6 +68,7 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
         message: '',
       });
     }
+    resetAll();
   }
 
   return (

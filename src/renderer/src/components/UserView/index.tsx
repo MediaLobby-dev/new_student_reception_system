@@ -3,60 +3,32 @@ import { getDepartmentColor } from './functions/getDepartmentColor';
 import RemarkInputBox from '../RemarkInputBox';
 import styles from './styles.module.scss';
 import Button from '../Button';
-import Modal from 'react-modal';
 import { useStudentData } from '../../hooks/useStudentData';
 import { useCancelReception } from '../../hooks/useCancelReception';
 import { useAtomValue } from 'jotai';
 import { isAdminModeAtom } from '../../atom';
 import { useDisableNotifyFlug } from '../../hooks/useDisableNotifyFlug';
-
-const customStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 10000,
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+import { CancelStudentReceptionModal } from '../Modal/CancelStudentReceptionModal';
 
 type UserViewProps = {
   handleResrtInputStudentId: () => void;
 };
 
 export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
-  const [isLoadingModal, setIsLoadingModal] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isAdminMode = useAtomValue(isAdminModeAtom);
 
   const { data } = useStudentData();
   const { cancelReception } = useCancelReception();
   const { disableNotifyFlug } = useDisableNotifyFlug();
 
-  function openModal() {
-    setIsOpen(true);
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
   }
 
-  function closeModal() {
-    setIsOpen(false);
+  if (!data || !data.studentName) {
+    return null;
   }
-
-
-  async function onClickCancelReception() {
-    setIsLoadingModal(true);
-    cancelReception();
-    setIsLoadingModal(false);
-    closeModal();
-    handleResrtInputStudentId();
-  }
-
-  // データが存在しない
-  if (!data.studentName) return <></>;
 
   return (
     <div className="container">
@@ -104,7 +76,7 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
                         <Button
                           status="important"
                           onClick={() => {
-                            openModal();
+                            handleModal();
                           }}
                         >
                           受付を取消する
@@ -163,41 +135,14 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
           <RemarkInputBox />
         </div>
       </div>
+      
+      <CancelStudentReceptionModal
+        receptionModalIsOpen={isModalOpen}
+        handleModal={handleModal}
+        cancelReception={cancelReception}
+        handleResrtInputStudentId={handleResrtInputStudentId}
+        />
 
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className={styles.modalTitle}>受付の取消</h5>
-          </div>
-          <div className={styles.modalBody}>
-            <p>受付の取り消し処理を行います。この操作は中断できません。よろしいですか？</p>
-          </div>
-          <div className={styles.modalBtnBox}>
-            <Button
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              キャンセル
-            </Button>
-            <Button
-              status="danger"
-              onClick={() => {
-                onClickCancelReception();
-              }}
-              disabled={isLoadingModal}
-            >
-              {isLoadingModal ? (
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              ) : (
-                '実行'
-              )}
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 }

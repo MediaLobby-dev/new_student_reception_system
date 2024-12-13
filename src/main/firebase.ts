@@ -3,8 +3,8 @@ import { FirebaseAppError } from 'firebase-admin/app';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { BASE_PATH } from './index';
-import { Response } from '../types/response';
-import { MessageCode } from '../types/messageCode';
+import { BrowserWindow } from 'electron';
+import { dialog } from 'electron';
 
 export const isExsistsFirebaseSDKJson = (): boolean => {
   try {
@@ -14,16 +14,14 @@ export const isExsistsFirebaseSDKJson = (): boolean => {
   }
 };
 
-export const initializeFirebase = (): Response<null> => {
+export const initializeFirebase = () => {
   if (!isExsistsFirebaseSDKJson()) {
-    return {
-      status: false,
-      data: null,
-      error: {
-        code: MessageCode.FAILED_FIREBASE_SDK_READ,
-        message: 'Firebase SDK file is not exists.',
-      },
-    };
+    dialog.showMessageBox(BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0], {
+      type: 'error',
+      title: 'Firebase SDK 初期化エラー',
+      message: 'Firebase SDKの接続情報が存在しません。マニュアルを参照の上、[設定]から接続情報を設定してください。',
+    });
+    return;
   }
   try {
     initializeApp({
@@ -31,25 +29,14 @@ export const initializeFirebase = (): Response<null> => {
         JSON.parse(readFileSync(join(BASE_PATH, 'config', 'sdk.json')).toString()),
       ),
     });
-    return {
-      status: true,
-      data: null,
-    };
   } catch (error) {
     if (error instanceof FirebaseAppError) {
-      return {
-        status: true,
-        data: null,
-      };
+      dialog.showMessageBox(BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0], {
+        type: 'error',
+        title: 'エラー',
+        message: 'Firebase SDKの初期化に失敗しました。',
+      });
+      return;
     }
-
-    return {
-      status: false,
-      data: null,
-      error: {
-        code: MessageCode.FAILED_FIREBASE_SDK_READ,
-        message: (error as Error).message,
-      },
-    };
   }
 };
