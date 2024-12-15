@@ -14,7 +14,7 @@ export const BASE_PATH = app.getPath('home');
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required');
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.electron');
+  electronApp.setAppUserModelId('local.medialobby');
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window);
