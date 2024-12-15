@@ -2,7 +2,6 @@ import { join } from 'path';
 import fs from 'fs';
 import { BASE_PATH } from '../index';
 import { app, BrowserWindow, dialog } from 'electron';
-import { initializeFirebase } from '../firebase';
 
 export const saveSdk = async () => {
   const configDirPath = join(BASE_PATH, 'config');

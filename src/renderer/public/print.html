@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受付登録票 印刷ページ</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        @page {
+            size: 3.2in 15in;
+            margin-top: 10px;
+            margin-left: 0cm;
+            margin-right: 0cm;
+        }
+
+        section {
+            margin-top: 12px;
+        }
+
+        section div.title {
+            font-size: 14px;
+        }
+
+        section div.content {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            -webkit-align-content: center;
+            align-content: center;
+            vertical-align: middle;
+        }
+
+        .center-align {
+            text-align: center;
+        }
+
+        .barcode-space {
+            text-align: center;
+            margin: 25px 0px;
+        }
+
+        .seal-space {
+            height: 900px;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .border {
+            border: 0;
+            border-bottom: 2px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        受付登録票
+    </header>
+
+    <section>
+        <div class="title">
+            受付時刻
+        </div>
+        <div class="content">
+            <span id="timestamp"></span>
+        </div>
+    </section>
+
+    <section>
+        <div class="title">
+            氏名
+        </div>
+        <div class="content">
+            <span id="studentName"></span> 様
+        </div>
+    </section>
+
+    <section>
+        <div class="title">
+            フリガナ
+        </div>
+        <div class="content">
+            <span id="kana"></span> 様
+        </div>
+    </section>
+
+    <section>
+        <div class="title">
+            学籍番号
+        </div>
+        <div class="content">
+            <span id="studentId"></span>
+        </div>
+    </section>
+
+    <div class="barcode-space">
+        <img id="barcode" />
+    </div>
+
+    <hr class="border">
+
+    <div class="seal-space">
+        <p>製品登録シールを貼り付けてください</p>
+        <p>(ガイダンス中に案内があります)</p>
+    </div>
+
+    <hr class="border">
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script>
+        window.onload = function () {
+            const url = new URL(window.location.href);
+            const studentId = url.searchParams.get("studentId");
+            const studentName = url.searchParams.get("studentName");
+            const kana = url.searchParams.get("kana");
+            const timestamp = url.searchParams.get("timestamp");
+
+            console.log(studentId, studentName, kana, timestamp);
+
+            if (!studentId || !studentName || !kana || !timestamp) {
+                alert("印刷データが不足しています。印刷を中止します。");
+                window.close();
+                return;
+            }
+
+            if (!studentId.length == 8) {
+                alert("学籍番号が不正です。印刷を中止します。");
+                window.close();
+                return;
+            }
+
+            JsBarcode("#barcode", studentId, {
+                format: "CODE39",
+                lineColor: "#000",
+                width: 1,
+                height: 50,
+                displayValue: false,
+                mod43: false
+            });
+
+            document.getElementById("studentId").innerText = studentId;
+            document.getElementById("studentName").innerText = studentName;
+            document.getElementById("kana").innerText = kana;
+            document.getElementById("timestamp").innerText = timestamp;
+            
+        }
+    </script>
+
+</body>
+</html>

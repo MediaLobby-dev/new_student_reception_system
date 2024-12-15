@@ -1,7 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
-import icon from '../../resources/icon.png?asset';
 import { saveSdk } from './functions/saveSdk';
 import { initializeFirebase } from './firebase';
 import { getStudentData } from './functions/getStudentData';
@@ -9,21 +8,23 @@ import { acceptReception } from './functions/acceptReception';
 import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
 import { disableNotifyFlug } from './functions/disableNotifyFlug';
+import { printRecipt } from './functions/printRecipt';
 
 export const BASE_PATH = app.getPath('home');
-app.commandLine.appendSwitch('--autoplay-policy','no-user-gesture-required');
+app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required');
 
-function createWindow(): void {
+app.whenReady().then(() => {
+  electronApp.setAppUserModelId('com.electron');
+
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window);
+  });
+
   const mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux'
-      ? {
-        icon,
-      }
-      : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -46,21 +47,8 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
-}
 
-app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.electron');
-
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window);
-  });
-
-  createWindow();
   initializeFirebase();
-
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
 });
 
 app.on('window-all-closed', () => {
@@ -89,3 +77,9 @@ ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: 
 
 // [IPC] 案内所フラグ無効化
 ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) => disableNotifyFlug(studentId));
+
+// [IPC] 印刷画面表示
+ipcMain.handle('showPrintWindow', async (_event: IpcMainInvokeEvent, studentId: string, studentName: string, kana: string) => printRecipt(studentId, studentName, kana, false));
+
+// [IPC] テスト印刷
+ipcMain.handle('testPrint', async () => printRecipt('00000000', 'テスト太郎', 'テストタロウ', true));

@@ -27,7 +27,7 @@ const customStyles = {
 
 export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }) => {
 
-    const { isAdminMode, handleAdminMode, openAndSaveSDKFile } = useSetting();
+    const { isAdminMode, handleAdminMode, openAndSaveSDKFile, testPrint } = useSetting();
     
     return (
         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
@@ -50,7 +50,7 @@ export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }
                         <tr>
                             <td>レシート印刷テスト</td>
                             <td>レシート印字機の動作確認を行います。</td>
-                            <td><Button status='primary' onClick={() => console.log("s")}>印刷実行</Button></td>
+                            <td><Button status='primary' onClick={() => testPrint()}>印刷実行</Button></td>
                         </tr>
                         <tr className={settingModalStyles.adminMode}>
                             <td>管理者モード</td>
