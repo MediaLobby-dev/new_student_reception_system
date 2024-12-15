@@ -13,7 +13,7 @@ export const acceptReception = async (studentId: string): Promise<Response<Stude
 
     // 変更が可能かどうかチェック
     if (!res || res.receptionStatus === true) {
-        dialog.showErrorBox('Error', '書き込みに失敗しました。アプリケーションを再起動してください。');
+        dialog.showErrorBox('Error', 'データの整合性検証に失敗しました。再度学籍番号を読み込み直してください。');
         throw new Error('Reception status is already false or document does not exist.');
     }
 

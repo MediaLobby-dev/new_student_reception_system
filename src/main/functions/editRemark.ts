@@ -12,7 +12,7 @@ export const editRemarks = async (studentId: string, newRemark: string): Promise
         return await db.runTransaction(async (transaction) => {
             const docSnap = await transaction.get(docRef);
             if (!docSnap.exists) {
-                dialog.showErrorBox('Error', '書き込みに失敗しました。アプリケーションを再起動してください。');
+                dialog.showErrorBox('Error', 'データの整合性検証に失敗しました。再度やり直してください。');
                 throw new Error("Document does not exist!");
             }
 
