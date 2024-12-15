@@ -31,15 +31,9 @@ export const useSetting = () => {
         window.electron.ipcRenderer.invoke("saveSdk");
     };
 
-    const testPrint = () => {
-        // フロントからは呼び出すだけ、メインプロセスでハンドリングまで行う
-        window.electron.ipcRenderer.invoke("testPrint");
-    }
-
     return {
         isAdminMode,
         handleAdminMode,
         openAndSaveSDKFile,
-        testPrint,
     };
 };

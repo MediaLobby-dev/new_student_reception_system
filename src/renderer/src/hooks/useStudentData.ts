@@ -16,16 +16,6 @@ export const useStudentData = () => {
     const [studentData, setStudentData] = useAtom(studentDataAtom);
     const resetAll = useSetAtom(resetStudentData);
 
-    // 学生情報をセットしてチェック
-    const setAndCheckStudentData = (res: Response<StudentData>) => {
-        if (res.status && res.data) {
-            setStudentData(res.data);
-            setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
-        } else {
-            setMessageKeyCode(MessageCode.NOT_FOUND_STUDENT);
-        }
-    }
-
     useEffect(() => {
         const fetchData = async () => {
 
@@ -44,13 +34,15 @@ export const useStudentData = () => {
                 .then(async (res: Response<StudentData>) => {
                     // エラーが発生した場合
                     if (!res) {
-                        setMessageKeyCode(MessageCode.INTERNAL_SERVER_ERROR);
+                        setMessageKeyCode(MessageCode.NOT_FOUND_STUDENT);
                         return;
                     }
 
+                    setStudentData(res.data);
+
                     // 管理者モードの場合
                     if (isAdminMode) {
-                        setAndCheckStudentData(res);
+                        setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
                         return;
                     }
 
@@ -75,7 +67,7 @@ export const useStudentData = () => {
                         return;
                     }
 
-                    setAndCheckStudentData(res);
+                    setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
                 })
                 .catch((err) => {
                     console.error(err);

@@ -2,9 +2,10 @@ import { GrPowerReset } from 'react-icons/gr';
 import { GrCheckboxSelected } from 'react-icons/gr';
 import Button from '../Button';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isDeprecatedPCReceptionAtom, isLoadingAtom, messageCode, studentIdAtom, studentDataAtom, resetStudentData } from '../../atom';
+import { isDeprecatedPCReceptionAtom, messageCode, studentIdAtom, studentDataAtom, resetStudentData } from '../../atom';
 import { forwardRef } from 'react';
 import { useAcceptReception } from '../../hooks/useAcceptReception';
+import { usePrint } from '../../hooks/usePrint';
 
 type StudentIdInputBoxProps = {
   handleResrtInputStudentId: () => void;
@@ -15,9 +16,10 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
   const studentData = useAtomValue(studentDataAtom);
   const resetAll = useSetAtom(resetStudentData);
   const [messageKeyCode, setMessageKeyCode] = useAtom(messageCode);
-  const setIsLoading = useSetAtom(isLoadingAtom);
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
+
   const { acceptReception } = useAcceptReception();
+  const { printRecipt } = usePrint();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length === 0) {
@@ -26,7 +28,6 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
       // フォーカスをリセット
       handleResrtInputStudentId();
     }
-    console.log(e.target.value);
     setStudentId(e.target.value);
   };
 
@@ -34,10 +35,8 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
     setMessageKeyCode(null);
     // 学籍番号をリセット
     setStudentId('');
-
     // フォーカスをリセット
     handleResrtInputStudentId();
-
     // メッセージをリセット
     resetAll();
   };
@@ -55,20 +54,17 @@ const StudentIdInputBox = forwardRef(({ handleResrtInputStudentId }: StudentIdIn
   }
 
   async function handlReceptionCheck() {
+    // 推奨機以外の生徒の場合
     if (isDeprecatedPCReception) {
       acceptReception();
-    } else {
-      setIsLoading({
-        status: true,
-        message: '処理中...',
-      });
-      acceptReception();
-      setIsLoading({
-        status: false,
-        message: '',
-      });
+      inputReset();
+      return;
     }
-    resetAll();
+
+    printRecipt().then(() => {
+      acceptReception();
+      inputReset();
+    });
   }
 
   return (

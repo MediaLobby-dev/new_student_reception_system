@@ -4,6 +4,7 @@ import Button from '../../Button';
 import styles from '../styles.module.scss';
 import settingModalStyles from './styles.module.scss';
 import { useSetting } from '../../../hooks/useSetting';
+import { usePrint } from '../../../hooks/usePrint';
 
 type SettingModalProps = {
     isOpen: boolean;
@@ -27,7 +28,8 @@ const customStyles = {
 
 export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }) => {
 
-    const { isAdminMode, handleAdminMode, openAndSaveSDKFile, testPrint } = useSetting();
+    const { isAdminMode, handleAdminMode, openAndSaveSDKFile } = useSetting();
+    const { testPrint } = usePrint();
     
     return (
         <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>

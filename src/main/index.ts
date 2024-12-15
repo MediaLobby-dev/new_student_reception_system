@@ -57,9 +57,6 @@ app.on('window-all-closed', () => {
   }
 });
 
-// [IPC] Firebase SDK準備完了確認
-ipcMain.handle('initializeFirebase', async () => initializeFirebase());
-
 // [IPC] Firebase SDK保存
 ipcMain.handle('saveSdk', async () => saveSdk());
 
@@ -79,7 +76,7 @@ ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: 
 ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) => disableNotifyFlug(studentId));
 
 // [IPC] 印刷画面表示
-ipcMain.handle('showPrintWindow', async (_event: IpcMainInvokeEvent, studentId: string, studentName: string, kana: string) => printRecipt(studentId, studentName, kana, false));
+ipcMain.handle('printRecipt', async (_event: IpcMainInvokeEvent, studentId: string, studentName: string, kana: string) => printRecipt(studentId, studentName, kana, false));
 
 // [IPC] テスト印刷
 ipcMain.handle('testPrint', async () => printRecipt('00000000', 'テスト太郎', 'テストタロウ', true));
