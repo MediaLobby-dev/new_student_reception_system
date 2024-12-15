@@ -1,4 +1,5 @@
 import { BrowserWindow, dialog } from 'electron';
+import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
 
 export const printRecipt = async (studentId: string, studentName: string, kana: string, isTest: boolean) => {
@@ -18,7 +19,11 @@ export const printRecipt = async (studentId: string, studentName: string, kana: 
     const url = join(__dirname, '../renderer/print.html');
     const timestamp = new Date().toLocaleString();
 
-    printWindow.loadURL(`${url}?studentId=${studentId}&studentName=${studentName}&kana=${kana}&timestamp=${timestamp}`);
+    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+        printWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/print.html?studentId=${studentId}&studentName=${studentName}&kana=${kana}&timestamp=${timestamp}`);
+    } else {
+        printWindow.loadURL(`${url}?studentId=${studentId}&studentName=${studentName}&kana=${kana}&timestamp=${timestamp}`);
+    }
 
     printWindow.webContents.on('did-finish-load', () => {
         if (isTest) {
@@ -46,7 +51,7 @@ export const printRecipt = async (studentId: string, studentName: string, kana: 
                                 console.log(error);
                             }
                         });
-                } 
+                }
                 else {
                     dialog.showMessageBox({
                         type: 'info',
