@@ -2,6 +2,7 @@ import { Response } from '../../types/response';
 import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
+import { dialog } from 'electron';
 
 export const disableNotifyFlug = async(studentId: string): Promise<Response<StudentData | null>> => {
     const db = firestore();
@@ -11,6 +12,7 @@ export const disableNotifyFlug = async(studentId: string): Promise<Response<Stud
         return await db.runTransaction(async (transaction) => {
             const docSnap = await transaction.get(docRef);
             if (!docSnap.exists) {
+                dialog.showErrorBox('Error', '書き込みに失敗しました。アプリケーションを再起動してください。');
                 throw new Error("Document does not exist!");
             }
 

@@ -1,6 +1,7 @@
 import { Response } from '../../types/response';
 import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
+import { dialog } from 'electron';
 
 export const acceptReception = async (studentId: string): Promise<Response<StudentData>> => {
   const db = firestore();
@@ -12,6 +13,7 @@ export const acceptReception = async (studentId: string): Promise<Response<Stude
 
     // 変更が可能かどうかチェック
     if (!res || res.receptionStatus === true) {
+        dialog.showErrorBox('Error', '書き込みに失敗しました。アプリケーションを再起動してください。');
         throw new Error('Reception status is already false or document does not exist.');
     }
 
