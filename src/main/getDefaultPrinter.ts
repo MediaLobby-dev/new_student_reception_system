@@ -4,10 +4,10 @@ export const getDefaultPrinter = async (): Promise<Electron.PrinterInfo> => {
   const mainWindow = BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
   const printerConfig = await mainWindow.webContents.getPrintersAsync();
 
-  const isDefaultPrinter = printerConfig.filter((res) => res.isDefault === true);
+  const defaultPrinter = printerConfig.filter((res) => res.isDefault === true);
 
-  if (isDefaultPrinter && isDefaultPrinter.length >= 1) {
-    return isDefaultPrinter[0];
+  if (defaultPrinter && defaultPrinter.length >= 1) {
+    return defaultPrinter[0];
   }
 
   dialog.showErrorBox(

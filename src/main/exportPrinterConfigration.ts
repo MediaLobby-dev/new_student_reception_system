@@ -7,9 +7,9 @@ import { getDefaultPrinter } from './getDefaultPrinter';
 export const exportPrinterConfigration = async () => {
   const configDirPath = join(BASE_PATH, 'config');
 
-  const isDefaultPrinter = await getDefaultPrinter();
+  const defaultPrinter = await getDefaultPrinter();
   exec(
-    `( Get-PrintConfiguration -PrinterName ${isDefaultPrinter.displayName} ).PrintTicketXML | Out-File printerConfig.xml -Encoding ascii`,
+    `( Get-PrintConfiguration -PrinterName ${defaultPrinter.displayName} ).PrintTicketXML | Out-File printerConfig.xml -Encoding ascii`,
     { shell: 'powershell.exe', cwd: configDirPath },
     (error, _, stderr) => {
       if (stderr || error) {
