@@ -1,6 +1,6 @@
 {
   "name": "new-student-reception-system",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "東京工科大学の新入生受付システムです。",
   "main": "./out/main/index.js",
   "author": "MediaLobby",
