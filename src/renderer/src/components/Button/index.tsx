@@ -2,7 +2,15 @@ import styles from './styles.module.scss';
 import classNames from 'classnames';
 
 type Props = {
-  status?: 'primary' | 'success' | 'danger' | 'warning' | 'secondary' | 'important' | 'info' | 'wide';
+  status?:
+    | 'primary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'secondary'
+    | 'important'
+    | 'info'
+    | 'wide';
   onClick: () => void;
   disabled?: boolean;
   children?: React.ReactNode;

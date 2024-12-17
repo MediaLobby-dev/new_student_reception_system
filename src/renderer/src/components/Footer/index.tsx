@@ -7,9 +7,10 @@ import { SettingModal } from '../Modal/Setting';
 import Button from '../Button';
 import styles from './styles.module.scss';
 
-
 export default function Footer() {
-  const [isDeprecatedPCReception, setIsDeprecatedPCReception] = useAtom(isDeprecatedPCReceptionAtom);
+  const [isDeprecatedPCReception, setIsDeprecatedPCReception] = useAtom(
+    isDeprecatedPCReceptionAtom,
+  );
   const [receptionModalIsOpen, setReceptionModalIsOpen] = useState(false);
   const [settingModalIsOpen, setSettingModalIsOpen] = useState(false);
 
@@ -31,18 +32,24 @@ export default function Footer() {
               <div className={styles.mode}>
                 現在の受付モード: <span>{currentMode}</span>
               </div>
-              <div className={styles.small}>ver: {__APP_VERSION__} (build: {__BUILD_DATE__})</div>
+              <div className={styles.small}>
+                ver: {__APP_VERSION__} (build: {__BUILD_DATE__})
+              </div>
               <div className={styles.small}>
                 ※外観・仕様は開発中または改良のため、各種仕様は予告なく変更される場合があります。
               </div>
               <div className={styles.small + ' mt-1'}>
-                本システムの音声案内は<a href="https://vidweb.co.jp/voicegate/" target="_blank" rel="noreferrer">ボイスゲート</a>を利用しています。
+                本システムの音声案内は
+                <a href="https://vidweb.co.jp/voicegate/" target="_blank" rel="noreferrer">
+                  ボイスゲート
+                </a>
+                を利用しています。
               </div>
             </div>
             <div className="col-sm-6">
               <div className={styles.toolBox}>
                 <Button
-                  status='wide'
+                  status="wide"
                   onClick={() => {
                     window.open('https://github.com/MediaLobby-dev/new_student_reception_system');
                   }}
@@ -50,7 +57,7 @@ export default function Footer() {
                   <GrHelpBook /> ヘルプ
                 </Button>
                 <Button
-                  status='wide'
+                  status="wide"
                   onClick={() => {
                     setSettingModalIsOpen(true);
                   }}
@@ -75,11 +82,10 @@ export default function Footer() {
         receptionModalIsOpen={receptionModalIsOpen}
         setReceptionModalIsOpen={setReceptionModalIsOpen}
         isDeprecatedPCReception={isDeprecatedPCReception}
-        onClickChangeMode={onClickChangeMode} />
+        onClickChangeMode={onClickChangeMode}
+      />
 
-      <SettingModal
-        isOpen={settingModalIsOpen}
-        closeModal={() => setSettingModalIsOpen(false)} />
+      <SettingModal isOpen={settingModalIsOpen} closeModal={() => setSettingModalIsOpen(false)} />
     </>
   );
 }

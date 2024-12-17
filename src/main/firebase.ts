@@ -19,7 +19,8 @@ export const initializeFirebase = () => {
     dialog.showMessageBox(BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0], {
       type: 'error',
       title: 'Firebase SDK 初期化エラー',
-      message: 'Firebase SDKの接続情報が存在しません。マニュアルを参照の上、[設定]から接続情報を設定してください。',
+      message:
+        'Firebase SDKの接続情報が存在しません。マニュアルを参照の上、[設定]から接続情報を設定してください。',
     });
     return;
   }

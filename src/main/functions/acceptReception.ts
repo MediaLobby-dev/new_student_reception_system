@@ -13,27 +13,30 @@ export const acceptReception = async (studentId: string): Promise<Response<Stude
 
     // 変更が可能かどうかチェック
     if (!res || res.receptionStatus === true) {
-        dialog.showErrorBox('Error', 'データの整合性検証に失敗しました。再度学籍番号を読み込み直してください。');
-        throw new Error('Reception status is already false or document does not exist.');
+      dialog.showErrorBox(
+        'Error',
+        'データの整合性検証に失敗しました。再度学籍番号を読み込み直してください。',
+      );
+      throw new Error('Reception status is already false or document does not exist.');
     }
 
     // 更新処理
     transaction.update(docRef, {
-        receptionStatus: true,
+      receptionStatus: true,
     });
 
     return {
-        status: true,
-        data: {
-            studentName: res.studentName,
-            kana: res.kana,
-            department: res.department,
-            remarks: res.remarks,
-            supply: res.supply,
-            isDeprecatedPC: res.isDeprecatedPC,
-            isNeedNotify: res.isNeedNotify,
-            receptionStatus: false,
-        }
+      status: true,
+      data: {
+        studentName: res.studentName,
+        kana: res.kana,
+        department: res.department,
+        remarks: res.remarks,
+        supply: res.supply,
+        isDeprecatedPC: res.isDeprecatedPC,
+        isNeedNotify: res.isNeedNotify,
+        receptionStatus: false,
+      },
     };
-});
-}
+  });
+};

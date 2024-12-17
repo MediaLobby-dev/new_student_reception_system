@@ -24,7 +24,7 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
 
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
-  }
+  };
 
   if (!data || !data.studentName) {
     return null;
@@ -34,33 +34,27 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
     <div className="container">
       <div className="row">
         <div className="col-sm-6">
-
           {isAdminMode ? (
             <div className="card mb-2">
               <div className="card-body">
                 <h6 className="card-subtitle mb-2 text-body-secondary">対応状況</h6>
-                {
-                  data?.isNeedNotify ? (
-                    <div className={styles.acceptReceptionBox}>
-                      <Button
-                        status="success"
-                        onClick={() => {
-                          disableNotifyFlug();
-                        }}
-                      >
-                        対応済にする
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className={styles.viewBox}>
-                      対応済み
-                    </div>
-                  )
-                }
+                {data?.isNeedNotify ? (
+                  <div className={styles.acceptReceptionBox}>
+                    <Button
+                      status="success"
+                      onClick={() => {
+                        disableNotifyFlug();
+                      }}
+                    >
+                      対応済にする
+                    </Button>
+                  </div>
+                ) : (
+                  <div className={styles.viewBox}>対応済み</div>
+                )}
               </div>
             </div>
           ) : (
-
             <div className="card mb-2">
               <div className="card-body">
                 <h6 className="card-subtitle mb-2 text-body-secondary">受付状況</h6>
@@ -87,7 +81,6 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
                 </div>
               </div>
             </div>
-
           )}
 
           <div className="card mb-2">
@@ -135,14 +128,13 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
           <RemarkInputBox />
         </div>
       </div>
-      
+
       <CancelStudentReceptionModal
         receptionModalIsOpen={isModalOpen}
         handleModal={handleModal}
         cancelReception={cancelReception}
         handleResrtInputStudentId={handleResrtInputStudentId}
-        />
-
+      />
     </div>
   );
 }

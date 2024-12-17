@@ -3,7 +3,6 @@ import { messageCode } from '../../atom';
 import { MessageCode, MessageCodeList } from '../../../../types/messageCode';
 
 export default function MessageBox() {
-
   const messageKeyCode = useAtomValue(messageCode);
 
   switch (messageKeyCode) {
@@ -19,7 +18,7 @@ export default function MessageBox() {
             <p className="mb-0">{MessageCodeList[messageKeyCode].message}</p>
           </div>
         </div>
-      )
+      );
 
     case MessageCode.INVALID_STUDENT_NUMBER:
       return (
@@ -29,7 +28,7 @@ export default function MessageBox() {
             <p className="mb-0">{MessageCodeList[messageKeyCode].subMessage}</p>
           </div>
         </div>
-      )
+      );
 
     case MessageCode.BAD_REQUEST:
     case MessageCode.NOT_FOUND_STUDENT:
@@ -41,7 +40,7 @@ export default function MessageBox() {
             <p className="mb-0">{MessageCodeList[messageKeyCode].subMessage}</p>
           </div>
         </div>
-      )
+      );
 
     case MessageCode.UNABLE_RECEPTION:
     case MessageCode.PURCHASED_RECOMMENDED_MACHINE:
@@ -53,7 +52,7 @@ export default function MessageBox() {
           <hr />
           <span>{MessageCodeList[messageKeyCode].subMessage}</span>
         </div>
-      )
+      );
 
     default:
       return <></>;

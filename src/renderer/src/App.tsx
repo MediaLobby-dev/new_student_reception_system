@@ -18,19 +18,15 @@ function App(): JSX.Element {
       inputEl.current.value = '';
       inputEl.current.focus();
     }
-  }
+  };
 
   return (
     <>
-    {
-      isAdminMode && (
+      {isAdminMode && (
         <header className="bg-warning py-2 d-flex align-items-center justify-content-center">
-          <div className="text-center">
-            案内所管理者モードが有効になっています
-          </div>
+          <div className="text-center">案内所管理者モードが有効になっています</div>
         </header>
-      )
-    }
+      )}
 
       <div className="container py-4">
         <StudentIdInputBox ref={inputEl} handleResrtInputStudentId={handleResrtInputStudentId} />

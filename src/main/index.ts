@@ -9,6 +9,7 @@ import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
 import { disableNotifyFlug } from './functions/disableNotifyFlug';
 import { printRecipt } from './functions/printRecipt';
+import { exportPrinterConfigration } from './exportPrinterConfigration';
 
 export const BASE_PATH = app.getPath('home');
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required');
@@ -49,6 +50,7 @@ app.whenReady().then(() => {
   }
 
   initializeFirebase();
+  exportPrinterConfigration();
 });
 
 app.on('window-all-closed', () => {
@@ -61,22 +63,40 @@ app.on('window-all-closed', () => {
 ipcMain.handle('saveSdk', async () => saveSdk());
 
 // [IPC] 生徒情報取得
-ipcMain.handle('getStudentData', async (_event: IpcMainInvokeEvent, studentId: string) => getStudentData(studentId));
+ipcMain.handle('getStudentData', async (_event: IpcMainInvokeEvent, studentId: string) =>
+  getStudentData(studentId),
+);
 
 // [IPC] 生徒受付
-ipcMain.handle('acceptReception', async (_event: IpcMainInvokeEvent, studentId: string) => acceptReception(studentId));
+ipcMain.handle('acceptReception', async (_event: IpcMainInvokeEvent, studentId: string) =>
+  acceptReception(studentId),
+);
 
 // [IPC] 備考欄編集
-ipcMain.handle('editRemarks', async (_event: IpcMainInvokeEvent, studentId: string, newRemark: string) => editRemarks(studentId, newRemark));
+ipcMain.handle(
+  'editRemarks',
+  async (_event: IpcMainInvokeEvent, studentId: string, newRemark: string) =>
+    editRemarks(studentId, newRemark),
+);
 
 // [IPC] 受付キャンセル
-ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: string) => cancelReception(studentId));
+ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: string) =>
+  cancelReception(studentId),
+);
 
 // [IPC] 案内所フラグ無効化
-ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) => disableNotifyFlug(studentId));
+ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) =>
+  disableNotifyFlug(studentId),
+);
 
 // [IPC] 印刷画面表示
-ipcMain.handle('printRecipt', async (_event: IpcMainInvokeEvent, studentId: string, studentName: string, kana: string) => printRecipt(studentId, studentName, kana, false));
+ipcMain.handle(
+  'printRecipt',
+  async (_event: IpcMainInvokeEvent, studentId: string, studentName: string, kana: string) =>
+    printRecipt(studentId, studentName, kana, false),
+);
 
 // [IPC] テスト印刷
-ipcMain.handle('testPrint', async () => printRecipt('00000000', 'テスト太郎', 'テストタロウ', true));
+ipcMain.handle('testPrint', async () =>
+  printRecipt('00000000', 'テスト太郎', 'テストタロウ', true),
+);

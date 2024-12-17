@@ -18,7 +18,7 @@ export const saveSdk = async () => {
         message: '設定ディレクトリの作成に失敗しました。',
       });
     }
-  }else{
+  } else {
     // ファイルが存在する場合は削除
     if (fs.existsSync(sdkPath)) {
       fs.unlinkSync(sdkPath);
@@ -55,15 +55,17 @@ export const saveSdk = async () => {
   }
 
   // アプリの再起動を促す
-  dialog.showMessageBox(mainWin, {
-    type: 'info',
-    title: 'アプリの再起動',
-    message: 'Firebase SDKの設定が完了しました。\nアプリを再起動してください。',
-    buttons: ['再起動'],
-  }).then((res) => {
-    if (res.response === 0) {
-      app.relaunch();
-      app.exit();
-    }
-  });
+  dialog
+    .showMessageBox(mainWin, {
+      type: 'info',
+      title: 'アプリの再起動',
+      message: 'Firebase SDKの設定が完了しました。\nアプリを再起動してください。',
+      buttons: ['再起動'],
+    })
+    .then((res) => {
+      if (res.response === 0) {
+        app.relaunch();
+        app.exit();
+      }
+    });
 };

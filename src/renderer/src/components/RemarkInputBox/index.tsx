@@ -24,8 +24,12 @@ export default function RemarkInputBox() {
               更新
             </Button>
             <div className={styles.statusMsg}>
-              {isSuccess && <span className={styles.success}>更新しました</span> }
-              {isError && <span className={styles.err}>更新に失敗しました。画面上部のメッセージをご確認ください。</span> }
+              {isSuccess && <span className={styles.success}>更新しました</span>}
+              {isError && (
+                <span className={styles.err}>
+                  更新に失敗しました。画面上部のメッセージをご確認ください。
+                </span>
+              )}
             </div>
           </div>
         </div>
