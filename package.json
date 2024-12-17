@@ -55,30 +55,5 @@
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
-  },
-  "build": {
-    "appId": "local.mel-tut.new-student-reception-system",
-    "productName": "新入生受付システム",
-    "files": [
-      "out/**/*"
-    ],
-    "publish": {
-      "provider": "github",
-      "owner": "MediaLobby-dev",
-      "repo": "new_student_reception_system",
-      "releaseType": "release"
-    },
-    "mac": {
-      "target": "dmg",
-      "icon": "build/icon.png"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "build/icon.png"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
   }
 }
