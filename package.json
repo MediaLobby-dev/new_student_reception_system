@@ -1,6 +1,6 @@
 {
   "name": "new-student-reception-system",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "東京工科大学の新入生受付システムです。",
   "main": "./out/main/index.js",
   "author": "MediaLobby",
@@ -53,5 +53,9 @@
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
+  },
+  "build": {
+    "appId": "local.mel-tut.new-student-reception-system",
+    "productName": "新入生受付システム"
   }
 }
