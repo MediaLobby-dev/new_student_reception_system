@@ -44,23 +44,20 @@ export const printRecipt = async (studentId: string, studentName: string, kana: 
                                     title: 'ジョブ送信完了',
                                     message: '印刷機へのジョブ送信が完了しました。\nレシートが出てこない場合は、設定を確認してください。',
                                 });
-
                                 console.log('Print successfully.');
-                                printWindow.close();
                             } else {
                                 console.log(error);
+                                dialog.showErrorBox('Error', '印刷に失敗しました。プリンタ設定を確認してください。');
                             }
+                            printWindow.close();
                         });
-                }
-                else {
+                } else {
                     dialog.showMessageBox({
                         type: 'info',
                         title: '印刷テスト',
                         message: '印刷テストがキャンセルされました。',
                     });
                 }
-
-                printWindow.close();
             });
             return;
         }

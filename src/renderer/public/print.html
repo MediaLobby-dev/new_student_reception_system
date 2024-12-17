@@ -129,14 +129,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
     <script>
-        window.onload = function () {
+        window.addEventListener('DOMContentLoaded', function () {
             const url = new URL(window.location.href);
             const studentId = url.searchParams.get("studentId");
             const studentName = url.searchParams.get("studentName");
             const kana = url.searchParams.get("kana");
             const timestamp = url.searchParams.get("timestamp");
-
-            console.log(studentId, studentName, kana, timestamp);
 
             if (!studentId || !studentName || !kana || !timestamp) {
                 alert("印刷データが不足しています。印刷を中止します。");
@@ -164,7 +162,7 @@
             document.getElementById("kana").innerText = kana;
             document.getElementById("timestamp").innerText = timestamp;
 
-        }
+        });
     </script>
 
 </body>
