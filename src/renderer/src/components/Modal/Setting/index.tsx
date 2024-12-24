@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import Button from '../../Button';
 import styles from '../styles.module.scss';
 import settingModalStyles from './styles.module.scss';
-import { useSetting } from '../../../hooks/useSetting';
+import { useFirebase } from '../../../hooks/useFirebase';
 import { usePrint } from '../../../hooks/usePrint';
 
 type SettingModalProps = {
@@ -27,7 +27,7 @@ const customStyles = {
 };
 
 export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }) => {
-  const { isAdminMode, handleAdminMode, openAndSaveSDKFile } = useSetting();
+  const { openAndSaveSDKFile } = useFirebase();
   const { testPrint } = usePrint();
 
   return (
@@ -59,21 +59,6 @@ export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }
                 <Button status="primary" onClick={() => testPrint()}>
                   印刷実行
                 </Button>
-              </td>
-            </tr>
-            <tr className={settingModalStyles.adminMode}>
-              <td>管理者モード</td>
-              <td>案内所担当者向けの管理者モードを有効化します。</td>
-              <td>
-                {!isAdminMode ? (
-                  <Button status="danger" onClick={() => handleAdminMode()}>
-                    有効化
-                  </Button>
-                ) : (
-                  <Button status="info" onClick={() => handleAdminMode()}>
-                    無効化
-                  </Button>
-                )}
               </td>
             </tr>
           </table>

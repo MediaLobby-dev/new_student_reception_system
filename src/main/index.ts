@@ -1,5 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
+import { app, shell, BrowserWindow, ipcMain, IpcMainInvokeEvent, dialog } from 'electron';
 import { join } from 'path';
+import fs from 'fs';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { saveSdk } from './functions/saveSdk';
 import { initializeFirebase } from './firebase';
@@ -7,11 +8,27 @@ import { getStudentData } from './functions/getStudentData';
 import { acceptReception } from './functions/acceptReception';
 import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
-import { disableNotifyFlug } from './functions/disableNotifyFlug';
 import { printRecipt } from './functions/printRecipt';
 import { exportPrinterConfigration } from './exportPrinterConfigration';
 
 export const BASE_PATH = app.getPath('home');
+
+const createConfigDir = (window: BrowserWindow) => {
+  const configDirPath = join(BASE_PATH, 'config');
+  // 設定ディレクトリが存在しない場合は作成
+  if (!fs.existsSync(configDirPath)) {
+    try {
+      fs.mkdirSync(configDirPath);
+    } catch (error) {
+      dialog.showMessageBox(window, {
+        type: 'error',
+        title: 'エラー',
+        message: '設定ディレクトリの作成に失敗しました。',
+      });
+    }
+  }
+};
+
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required');
 
 app.whenReady().then(() => {
@@ -49,6 +66,7 @@ app.whenReady().then(() => {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 
+  createConfigDir(mainWindow);
   initializeFirebase();
   exportPrinterConfigration();
 });
@@ -82,11 +100,6 @@ ipcMain.handle(
 // [IPC] 受付キャンセル
 ipcMain.handle('cancelReception', async (_event: IpcMainInvokeEvent, studentId: string) =>
   cancelReception(studentId),
-);
-
-// [IPC] 案内所フラグ無効化
-ipcMain.handle('disableNotifyFlug', async (_event: IpcMainInvokeEvent, studentId: string) =>
-  disableNotifyFlug(studentId),
 );
 
 // [IPC] 印刷画面表示

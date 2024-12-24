@@ -6,16 +6,14 @@
 
 import { Howl } from 'howler';
 
-// 警告音
-const warning = new Howl({
-  src: ['./audio/warning.mp3'],
-  volume: 1,
-});
-
 // 推奨PC受付時に非推奨PCの人が来た場合
 // 「非推奨機をお持ちの学生さんです。非推奨機ガイダンス会場へ案内してください。」
 export const recommendedPcStudent = () => {
-  warning.play();
+  // 警告音
+  new Howl({
+    src: ['./audio/warning.mp3'],
+    volume: 1,
+  }).play();
 
   setTimeout(() => {
     new Howl({
@@ -28,7 +26,11 @@ export const recommendedPcStudent = () => {
 // 非推奨PC受付時に推奨PCの人が来た場合
 // 「推奨機を購入された学生さんです。推奨機ガイダンス会場へ案内してください。」
 export const nonRecomendPc = () => {
-  warning.play();
+  // 警告音
+  new Howl({
+    src: ['./audio/warning.mp3'],
+    volume: 1,
+  }).play();
 
   setTimeout(() => {
     new Howl({
@@ -41,7 +43,11 @@ export const nonRecomendPc = () => {
 // 告知事項ありの学生
 // 「受付できません。案内所へお越しください。」
 export const unableReception = () => {
-  warning.play();
+  // 警告音
+  new Howl({
+    src: ['./audio/warning.mp3'],
+    volume: 1,
+  }).play();
 
   setTimeout(() => {
     new Howl({

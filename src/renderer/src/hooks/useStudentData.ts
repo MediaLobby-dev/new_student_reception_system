@@ -6,7 +6,6 @@ import {
   studentDataAtom,
   resetStudentData,
   isDeprecatedPCReceptionAtom,
-  isAdminModeAtom,
 } from '../atom';
 import { StudentData } from '../../../types/studentData';
 import { Response } from '../../../types/response';
@@ -19,7 +18,6 @@ export const useStudentData = () => {
   const setIsLoading = useSetAtom(isLoadingAtom);
   const setMessageKeyCode = useSetAtom(messageCode);
   const isDeprecatedPCReception = useAtomValue(isDeprecatedPCReceptionAtom);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
   const [studentData, setStudentData] = useAtom(studentDataAtom);
   const resetAll = useSetAtom(resetStudentData);
 
@@ -50,12 +48,6 @@ export const useStudentData = () => {
           }
 
           setStudentData(res.data);
-
-          // 管理者モードの場合
-          if (isAdminMode) {
-            setMessageKeyCode(MessageCode.SUCCESSFUL_GET_STUDENT_DATA);
-            return;
-          }
 
           // 案内所対応が必要な場合
           if (res.status && res.data.isNeedNotify) {

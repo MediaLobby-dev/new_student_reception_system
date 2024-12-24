@@ -15,7 +15,6 @@ export const isNeedNotifyAtom = atomWithReset<boolean>(false);
 export const isDeprecatedPCAtom = atomWithReset<boolean>(false);
 
 export const initializedFirebaseAtom = atom<boolean>(false);
-export const isAdminModeAtom = atom<boolean>(false);
 
 export const studentDataAtom = atom(
   (get) => {

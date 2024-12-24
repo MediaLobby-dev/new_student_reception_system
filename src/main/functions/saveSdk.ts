@@ -7,22 +7,9 @@ export const saveSdk = async () => {
   const configDirPath = join(BASE_PATH, 'config');
   const sdkPath = join(configDirPath, 'sdk.json');
 
-  // 設定ディレクトリが存在しない場合は作成
-  if (!fs.existsSync(configDirPath)) {
-    try {
-      fs.mkdirSync(configDirPath);
-    } catch (error) {
-      dialog.showMessageBox(BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0], {
-        type: 'error',
-        title: 'エラー',
-        message: '設定ディレクトリの作成に失敗しました。',
-      });
-    }
-  } else {
-    // ファイルが存在する場合は削除
-    if (fs.existsSync(sdkPath)) {
-      fs.unlinkSync(sdkPath);
-    }
+  // ファイルが存在する場合は削除
+  if (fs.existsSync(sdkPath)) {
+    fs.unlinkSync(sdkPath);
   }
 
   const mainWin = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];

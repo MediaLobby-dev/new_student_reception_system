@@ -5,9 +5,6 @@ import styles from './styles.module.scss';
 import Button from '../Button';
 import { useStudentData } from '../../hooks/useStudentData';
 import { useCancelReception } from '../../hooks/useCancelReception';
-import { useAtomValue } from 'jotai';
-import { isAdminModeAtom } from '../../atom';
-import { useDisableNotifyFlug } from '../../hooks/useDisableNotifyFlug';
 import { CancelStudentReceptionModal } from '../Modal/CancelStudentReceptionModal';
 
 type UserViewProps = {
@@ -16,11 +13,9 @@ type UserViewProps = {
 
 export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isAdminMode = useAtomValue(isAdminModeAtom);
 
   const { data } = useStudentData();
   const { cancelReception } = useCancelReception();
-  const { disableNotifyFlug } = useDisableNotifyFlug();
 
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -34,27 +29,6 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
     <div className="container">
       <div className="row">
         <div className="col-sm-6">
-          {isAdminMode ? (
-            <div className="card mb-2">
-              <div className="card-body">
-                <h6 className="card-subtitle mb-2 text-body-secondary">対応状況</h6>
-                {data?.isNeedNotify ? (
-                  <div className={styles.acceptReceptionBox}>
-                    <Button
-                      status="success"
-                      onClick={() => {
-                        disableNotifyFlug();
-                      }}
-                    >
-                      対応済にする
-                    </Button>
-                  </div>
-                ) : (
-                  <div className={styles.viewBox}>対応済み</div>
-                )}
-              </div>
-            </div>
-          ) : (
             <div className="card mb-2">
               <div className="card-body">
                 <h6 className="card-subtitle mb-2 text-body-secondary">受付状況</h6>
@@ -81,7 +55,6 @@ export default function UserView({ handleResrtInputStudentId }: UserViewProps) {
                 </div>
               </div>
             </div>
-          )}
 
           <div className="card mb-2">
             <div className="card-body">
