@@ -141,7 +141,6 @@ export const printRecipt = async (
                   '印刷に失敗しました。プリンタ設定を確認してください。',
                 );
               }
-              printWindow.close();
             });
           } else {
             dialog.showMessageBox({
@@ -150,6 +149,7 @@ export const printRecipt = async (
               message: '印刷テストがキャンセルされました。',
             });
           }
+          printWindow.close();
         });
       return;
     }
