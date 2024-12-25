@@ -7,11 +7,6 @@ export const saveSdk = async () => {
   const configDirPath = join(BASE_PATH, 'config');
   const sdkPath = join(configDirPath, 'sdk.json');
 
-  // ファイルが存在する場合は削除
-  if (fs.existsSync(sdkPath)) {
-    fs.unlinkSync(sdkPath);
-  }
-
   const mainWin = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
   // ファイルを選択
   const paths = dialog.showOpenDialogSync(mainWin, {
@@ -28,6 +23,11 @@ export const saveSdk = async () => {
   // ファイルが選択されなかった場合
   if (!paths || paths.length === 0) {
     return;
+  }
+
+  // ファイルが存在する場合は削除
+  if (fs.existsSync(sdkPath)) {
+    fs.unlinkSync(sdkPath);
   }
 
   // ファイルをコピー
