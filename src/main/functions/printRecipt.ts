@@ -3,56 +3,62 @@ import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
 import { BASE_PATH } from '../index';
 import { readFileSync } from 'fs';
-import { parseString } from 'xml2js';
+import { parseStringPromise } from 'xml2js';
 import { getDefaultPrinter } from '../getDefaultPrinter';
 
 type PrinterConfig = {
-  mediaSizeWidth: number;
-  mediaSizeHeight: number;
-  resolutionX: number;
-  resolutionY: number;
+  MediaSizeWidth: number,
+  MediaSizeHeight: number,
+  ResolutionX: number,
+  ResolutionY: number
 };
 
-const getPrnterConfig = (): PrinterConfig => {
-  const configDirPath = join(BASE_PATH, 'config');
-  const xml = readFileSync(`${configDirPath}/printerConfig.xml`, 'utf-8');
-
-  const config: PrinterConfig = {
-    mediaSizeWidth: 0,
-    mediaSizeHeight: 0,
-    resolutionX: 0,
-    resolutionY: 0,
-  };
-
-  parseString(xml, function (err, result) {
-    if (err) {
-      dialog.showErrorBox('エラー', 'プリンタ情報の取得に失敗しました。file: printRecipt.ts');
-      return;
-    }
-    config.mediaSizeWidth = Number(
-      result['psf:PrintTicket']['psf:Feature'][2]['psf:Option'][0]['psf:ScoredProperty'][0][
-        'psf:Value'
-      ][0]['_'],
-    );
-    config.mediaSizeHeight = Number(
-      result['psf:PrintTicket']['psf:Feature'][2]['psf:Option'][0]['psf:ScoredProperty'][1][
-        'psf:Value'
-      ][0]['_'],
-    );
-    config.resolutionX = Number(
-      result['psf:PrintTicket']['psf:Feature'][5]['psf:Option'][0]['psf:ScoredProperty'][0][
-        'psf:Value'
-      ][0]['_'],
-    );
-    config.resolutionY = Number(
-      result['psf:PrintTicket']['psf:Feature'][5]['psf:Option'][0]['psf:ScoredProperty'][1][
-        'psf:Value'
-      ][0]['_'],
-    );
+async function extractValuesFromXML(
+  xmlString: string
+): Promise<PrinterConfig> {
+  // XMLをJavaScriptオブジェクトに変換
+  const xmlObject = await parseStringPromise(xmlString, {
+    explicitArray: false, // 配列ではなく単一のオブジェクトとして取得
+    tagNameProcessors: [(name) => name.replace(/^.*:/, "")], // 名前空間を無視
   });
 
-  return config;
-};
+  const results: PrinterConfig = {
+    MediaSizeWidth: 0,
+    MediaSizeHeight: 0,
+    ResolutionX: 0,
+    ResolutionY: 0
+  };
+
+  const propertyNames = ["MediaSizeWidth", "MediaSizeHeight", "ResolutionX", "ResolutionY"];
+
+  // 再帰的にオブジェクトを探索して値を取得
+  function search(obj: unknown, target: string): string | undefined {
+    if (!obj || typeof obj !== "object") return undefined;
+
+    for (const key of Object.keys(obj)) {
+      if (key === "ScoredProperty") {
+        const scoredProps = Array.isArray(obj[key]) ? obj[key] : [obj[key]];
+        for (const scoredProp of scoredProps) {
+          if (scoredProp.$?.name?.endsWith(target)) {
+            return scoredProp.Value?._ || scoredProp.Value; // 値を取得
+          }
+        }
+      } else if (typeof obj[key] === "object") {
+        const result = search(obj[key], target);
+        if (result) return result;
+      }
+    }
+    return undefined;
+  }
+
+  for (const propertyName of propertyNames) {
+    results[propertyName] = Number(search(xmlObject, propertyName));
+  }
+
+  return results;
+}
+
+
 export const printRecipt = async (
   studentId: string,
   studentName: string,
@@ -76,7 +82,10 @@ export const printRecipt = async (
   const timestamp = new Date().toLocaleString();
 
   const printer = await getDefaultPrinter();
-  const printerCfg = getPrnterConfig();
+
+  const configDirPath = join(BASE_PATH, 'config');
+  const xml = readFileSync(`${configDirPath}/printerConfig.xml`, 'utf-8');
+  const printerCfg = await extractValuesFromXML(xml);
 
   const printerOptions: Electron.WebContentsPrintOptions = {
     silent: true,
@@ -88,8 +97,8 @@ export const printRecipt = async (
       top: 0,
       bottom: 0,
     },
-    pageSize: { width: printerCfg.mediaSizeWidth, height: printerCfg.mediaSizeHeight },
-    dpi: { horizontal: printerCfg.resolutionX, vertical: printerCfg.resolutionY },
+    pageSize: { width: printerCfg.MediaSizeWidth, height: printerCfg.MediaSizeHeight },
+    dpi: { horizontal: printerCfg.ResolutionX, vertical: printerCfg.ResolutionY },
   };
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
