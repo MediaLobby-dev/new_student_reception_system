@@ -27,7 +27,7 @@ const customStyles = {
 };
 
 export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }) => {
-  const { openAndSaveSDKFile } = useFirebase();
+  const { openAndSaveSDKFile, countStudentData } = useFirebase();
   const { testPrint } = usePrint();
 
   return (
@@ -58,6 +58,15 @@ export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }
               <td>
                 <Button status="primary" onClick={() => testPrint()}>
                   印刷実行
+                </Button>
+              </td>
+            </tr>
+            <tr>
+              <td>接続テスト</td>
+              <td>システムのDBに接続できるか確認します。初回接続時は数分かかる場合があります。</td>
+              <td>
+                <Button status="primary" onClick={() => {countStudentData()}}>
+                  実行
                 </Button>
               </td>
             </tr>

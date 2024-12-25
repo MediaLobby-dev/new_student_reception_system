@@ -10,6 +10,7 @@ import { editRemarks } from './functions/editRemark';
 import { cancelReception } from './functions/cancelReception';
 import { printRecipt } from './functions/printRecipt';
 import { exportPrinterConfigration } from './exportPrinterConfigration';
+import { countStudentData } from './functions/countStudentData';
 
 export const BASE_PATH = app.getPath('home');
 
@@ -112,4 +113,9 @@ ipcMain.handle(
 // [IPC] テスト印刷
 ipcMain.handle('testPrint', async () =>
   printRecipt('00000000', 'テスト太郎', 'テストタロウ', true),
+);
+
+// [IPC] 合計学生数取得
+ipcMain.handle('countStudentData', async () =>
+  await countStudentData()
 );
