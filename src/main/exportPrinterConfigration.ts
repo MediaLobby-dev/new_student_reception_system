@@ -14,7 +14,7 @@ export const exportPrinterConfigration = async () => {
     (error, _, stderr) => {
       if (stderr || error) {
         console.log(error);
-        dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました');
+        dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました。別のプリンタを接続し、既定のプリンタに設定してください。');
       }
     },
   );
