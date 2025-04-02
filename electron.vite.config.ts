@@ -33,7 +33,7 @@ export default defineConfig({
     },
     plugins: [react()],
     define: {
-      __APP_VERSION__: JSON.stringify('v1.0.0 RC lapidary'),
+      __APP_VERSION__: JSON.stringify('v1.0.1'),
       __BUILD_DATE__: JSON.stringify(dateFormater(new Date())),
     },
   },
