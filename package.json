@@ -29,7 +29,7 @@
     "react-icons": "^5.1.0",
     "react-modal": "^3.16.1",
     "sass": "^1.75.0",
-    "sweetalert2": "^11.6.13",
+    "sweetalert2": "^11.22.4",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
