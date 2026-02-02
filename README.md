@@ -8,6 +8,7 @@ An Electron application with React and TypeScript
 
 - 📚 [Firestore統合ドキュメント (日本語)](./FIRESTORE_INTEGRATION.md) - Firestoreの統合方法とアカウント管理について
 - 📚 [Firestore Integration Documentation (English)](./FIRESTORE_INTEGRATION_EN.md) - How Firestore is integrated and where accounts are managed
+- 📐 [アーキテクチャ図 / Architecture Diagrams](./ARCHITECTURE.md) - システムアーキテクチャとデータフローの視覚化
 
 ## Recommended IDE Setup
 
