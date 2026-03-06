@@ -1,9 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain, IpcMainInvokeEvent, dialog } from 'electron';
+import { app, shell, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron';
 import { join } from 'path';
-import fs from 'fs';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
-import { saveSdk } from './functions/saveSdk';
-import { initializeFirebase } from './firebase';
 import { getStudentData } from './functions/getStudentData';
 import { acceptReception } from './functions/acceptReception';
 import { editRemarks } from './functions/editRemark';
@@ -13,22 +10,6 @@ import { exportPrinterConfigration } from './exportPrinterConfigration';
 import { countStudentData } from './functions/countStudentData';
 
 export const BASE_PATH = app.getPath('home');
-
-const createConfigDir = (window: BrowserWindow) => {
-  const configDirPath = join(BASE_PATH, 'config');
-  // 設定ディレクトリが存在しない場合は作成
-  if (!fs.existsSync(configDirPath)) {
-    try {
-      fs.mkdirSync(configDirPath);
-    } catch (error) {
-      dialog.showMessageBox(window, {
-        type: 'error',
-        title: 'エラー',
-        message: '設定ディレクトリの作成に失敗しました。',
-      });
-    }
-  }
-};
 
 app.commandLine.appendSwitch('--autoplay-policy', 'no-user-gesture-required');
 
@@ -67,8 +48,6 @@ app.whenReady().then(() => {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 
-  createConfigDir(mainWindow);
-  initializeFirebase();
   exportPrinterConfigration();
 });
 
@@ -77,9 +56,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
-// [IPC] Firebase SDK保存
-ipcMain.handle('saveSdk', async () => saveSdk());
 
 // [IPC] 生徒情報取得
 ipcMain.handle('getStudentData', async (_event: IpcMainInvokeEvent, studentId: string) =>

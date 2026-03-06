@@ -56,7 +56,7 @@ export const resetStudentData = atom(null, (_get, set) => {
 export const isDeprecatedPCReceptionAtom = atom<boolean>(false);
 
 // ResponseCode
-export const messageCode = atom<MessageCode | null>(null);
+export const messageCode = atomWithReset<MessageCode | null>(null);
 
 // Loading
 export const isLoadingAtom = atom<{ status: boolean; message: string }>({
