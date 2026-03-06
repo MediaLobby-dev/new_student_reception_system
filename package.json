@@ -23,7 +23,6 @@
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
     "electron-updater": "^6.1.7",
-    "firebase-admin": "^13.0.1",
     "howler": "^2.2.4",
     "jotai": "^2.10.3",
     "react-icons": "^5.1.0",

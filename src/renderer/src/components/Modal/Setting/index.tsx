@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import Modal from 'react-modal';
 import Button from '../../Button';
 import styles from '../styles.module.scss';
 import settingModalStyles from './styles.module.scss';
-import { useFirebase } from '../../../hooks/useFirebase';
 import { usePrint } from '../../../hooks/usePrint';
+import { useConnectionTest } from '@renderer/hooks/useConnectionTest';
 
 type SettingModalProps = {
   isOpen: boolean;
@@ -27,7 +27,7 @@ const customStyles = {
 };
 
 export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }) => {
-  const { openAndSaveSDKFile, countStudentData } = useFirebase();
+  const { countStudentData } = useConnectionTest();
   const { testPrint } = usePrint();
 
   return (
@@ -42,15 +42,6 @@ export const SettingModal: React.FC<SettingModalProps> = ({ isOpen, closeModal }
               <th>項目</th>
               <th>説明</th>
               <th>操作</th>
-            </tr>
-            <tr>
-              <td>Firebase SDK 設定ファイル</td>
-              <td>システムのDBにアクセスするための設定ファイルを読み込みます。</td>
-              <td>
-                <Button status="primary" onClick={() => openAndSaveSDKFile()}>
-                  開く
-                </Button>
-              </td>
             </tr>
             <tr>
               <td>レシート印刷テスト</td>
