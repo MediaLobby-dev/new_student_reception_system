@@ -1,16 +1,18 @@
 import { Response } from '../../types/response';
-import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
+import { client } from '../client';
 
 export const getStudentData = async (studentId: string): Promise<Response<StudentData | null>> => {
-  const db = firestore();
+  const { data, error } = await client.GET('/api/v1/Student/{studentId}', {
+    params: {
+      path: {
+        studentId: studentId
+      },
+    }
+  });
 
-  const docRef = db.collection('students').doc(studentId);
-  const docSnap = await docRef.get();
-  const res = docSnap.data();
-
-  if (!res) {
+  if (error) {
     return {
       status: false,
       data: null,
@@ -24,14 +26,14 @@ export const getStudentData = async (studentId: string): Promise<Response<Studen
   return {
     status: true,
     data: {
-      studentName: res?.studentName,
-      kana: res?.kana,
-      department: res?.department,
-      remarks: res?.remarks,
-      supply: res?.supply,
-      isDeprecatedPC: res?.isDeprecatedPC,
-      isNeedNotify: res?.isNeedNotify,
-      receptionStatus: res?.receptionStatus,
+      studentName: data.name,
+      kana: data.kanaName,
+      department: data.faculty,
+      remarks: data.remarks || '',
+      supply: data.supply,
+      isDeprecatedPC: data.pcType === 'NonStandard',
+      isNeedNotify: data.checkInBlock,
+      receptionStatus: data.isCheckedIn,
     },
   };
 };

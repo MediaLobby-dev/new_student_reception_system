@@ -1,19 +1,16 @@
-import { firestore } from 'firebase-admin';
 import { dialog } from 'electron';
+import { client } from '../client';
 
-export const countStudentData = async (): Promise<number> => {
-    const db = firestore();
+export const countStudentData = async (): Promise<string> => {
+    const { data, error } = await client.GET('/api/v1/Student/count');
 
-    const docRef = db.collection('students');
-    const totalCount = await docRef.get().then((snapshot) => {
-        return snapshot.size;
-    }).catch((error) => {
+    if (error) {
         dialog.showErrorBox(
             'Error',
             '接続に失敗しました。ネットワーク接続を確認してください。'
         );
-        throw error;
-    });
+        throw new Error('Failed to fetch student count.');
+    }
 
-    return totalCount;
+    return data.totalCount;
 }

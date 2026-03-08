@@ -1,53 +1,56 @@
 import { Response } from '../../types/response';
-import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
-import { dialog } from 'electron';
+import { client } from '../client';
 
 export const editRemarks = async (
   studentId: string,
   newRemark: string,
 ): Promise<Response<StudentData | null>> => {
-  const db = firestore();
-  const docRef = db.collection('students').doc(studentId);
-
-  try {
-    return await db.runTransaction(async (transaction) => {
-      const docSnap = await transaction.get(docRef);
-      if (!docSnap.exists) {
-        dialog.showErrorBox('Error', 'データの整合性検証に失敗しました。再度やり直してください。');
-        throw new Error('Document does not exist!');
+    const { data, error } = await client.PUT('/api/v1/Student/{studentId}/remarks', {
+      params: {
+        path: {
+          studentId: studentId
+        }
+      },
+      body: {
+        remarks: newRemark
       }
+    });
 
-      const res = docSnap.data();
-
-      transaction.update(docRef, {
-        remarks: newRemark,
-      });
-
+    if (error?.status === 404) {
       return {
-        status: true,
-        data: {
-          studentName: res?.studentName,
-          kana: res?.kana,
-          department: res?.department,
-          remarks: newRemark,
-          supply: res?.supply,
-          isDeprecatedPC: res?.isDeprecatedPC,
-          isNeedNotify: res?.isNeedNotify,
-          receptionStatus: res?.receptionStatus,
+        status: false,
+        data: null,
+        error: {
+          code: MessageCode.NOT_FOUND_STUDENT,
+          message: '対象の学籍番号の学生が見つかりませんでした',
         },
       };
-    });
-  } catch (error) {
-    console.error('Transaction failed: ', error);
+    }
+
+    if (error) {
+      return {
+        status: false,
+        data: null,
+        error: {
+          code: MessageCode.INTERNAL_SERVER_ERROR,
+          message: '備考欄の編集に失敗しました',
+        },
+      };
+    }
+
     return {
-      status: false,
-      data: null,
-      error: {
-        code: MessageCode.INTERNAL_SERVER_ERROR,
-        message: 'Transaction failed!',
+      status: true,
+      data: {
+        studentName: data.name,
+        kana: data.kanaName,
+        department: data.faculty,
+        remarks: data.remarks || '',
+        supply: data.supply,
+        isDeprecatedPC: data.pcType === 'NonStandard',
+        isNeedNotify: data.checkInBlock,
+        receptionStatus: data.isCheckedIn,
       },
     };
-  }
 };

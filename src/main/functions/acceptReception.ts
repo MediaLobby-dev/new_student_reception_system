@@ -1,42 +1,44 @@
 import { Response } from '../../types/response';
-import { firestore } from 'firebase-admin';
 import { StudentData } from '../../types/studentData';
 import { dialog } from 'electron';
+import { client } from '../client';
 
 export const acceptReception = async (studentId: string): Promise<Response<StudentData>> => {
-  const db = firestore();
-
-  return await db.runTransaction(async (transaction) => {
-    const docRef = db.collection('students').doc(studentId);
-    const docSnap = await transaction.get(docRef);
-    const res = docSnap.data();
-
-    // 変更が可能かどうかチェック
-    if (!res || res.receptionStatus === true) {
-      dialog.showErrorBox(
-        'Error',
-        'データの整合性検証に失敗しました。再度学籍番号を読み込み直してください。',
-      );
-      throw new Error('Reception status is already false or document does not exist.');
+  const { data, error } = await client.POST('/api/v1/Student/{studentId}/check-in', {
+    params: {
+      path: {
+        studentId: studentId
+      }
     }
-
-    // 更新処理
-    transaction.update(docRef, {
-      receptionStatus: true,
-    });
-
-    return {
-      status: true,
-      data: {
-        studentName: res.studentName,
-        kana: res.kana,
-        department: res.department,
-        remarks: res.remarks,
-        supply: res.supply,
-        isDeprecatedPC: res.isDeprecatedPC,
-        isNeedNotify: res.isNeedNotify,
-        receptionStatus: false,
-      },
-    };
   });
+
+  if (error?.status === 404) {
+    dialog.showErrorBox(
+      'Error',
+      '対象の学籍番号の学生が見つかりませんでした。',
+    );
+    throw new Error('Student not found.');
+  }
+
+  if (error) {
+    dialog.showErrorBox(
+      'Error',
+      '受付処理に失敗しました。',
+    );
+    throw new Error('Failed to accept reception.');
+  }
+
+  return {
+    status: true,
+    data: {
+      studentName: data.name,
+      kana: data.kanaName,
+      department: data.faculty,
+      remarks: data.remarks || '',
+      supply: data.supply,
+      isDeprecatedPC: data.pcType === 'NonStandard',
+      isNeedNotify: data.checkInBlock,
+      receptionStatus: data.isCheckedIn,
+    },
+  };
 };
