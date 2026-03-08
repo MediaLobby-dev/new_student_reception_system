@@ -8,14 +8,21 @@ export const exportPrinterConfigration = async () => {
   const configDirPath = join(BASE_PATH, 'config');
 
   const defaultPrinter = await getDefaultPrinter();
-  exec(
-    `( Get-PrintConfiguration -PrinterName ${defaultPrinter.displayName} ).PrintTicketXML | Out-File printerConfig.xml -Encoding ascii`,
-    { shell: 'powershell.exe', cwd: configDirPath },
-    (error, _, stderr) => {
-      if (stderr || error) {
-        console.log(error);
-        dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました。別のプリンタを接続し、既定のプリンタに設定してください。');
-      }
-    },
-  );
+  const query = `( Get-PrintConfiguration -PrinterName "${defaultPrinter.displayName}" ).PrintTicketXML | Out-File printerConfig.xml -Encoding ascii`;
+
+  await new Promise<void>((resolve, reject) => {
+    exec(
+      query,
+      { shell: 'powershell.exe', cwd: configDirPath },
+      (error, _, stderr) => {
+        if (stderr || error) {
+          console.log(error);
+          dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました。別のプリンタを接続し、既定のプリンタに設定してください。');
+          reject(new Error('Failed to export printer configuration'));
+        } else {
+          resolve();
+        }
+      },
+    );
+  });
 };
