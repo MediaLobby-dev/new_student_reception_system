@@ -2,6 +2,7 @@ import { Response } from '../../types/response';
 import { StudentData } from '../../types/studentData';
 import { dialog } from 'electron';
 import { client } from '../client';
+import { PcType } from '../api';
 
 export const cancelReception = async (studentId: string): Promise<Response<StudentData>> => {
   const { data, error } = await client.POST('/api/v1/Student/{studentId}/cancel', {
@@ -36,7 +37,7 @@ export const cancelReception = async (studentId: string): Promise<Response<Stude
       department: data.faculty,
       remarks: data.remarks || '',
       supply: data.supply,
-      isDeprecatedPC: data.pcType === 'NonStandard',
+      isDeprecatedPC: data.pcType === PcType.Standard,
       isNeedNotify: data.checkInBlock,
       receptionStatus: false,
     },

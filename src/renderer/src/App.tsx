@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai';
 import { isLoadingAtom, studentIdAtom } from './atom';
 import { useRef } from 'react';
 
-function App(): JSX.Element {
+function App() {
   const studentId = useAtomValue(studentIdAtom);
   const isLoading = useAtomValue(isLoadingAtom);
 

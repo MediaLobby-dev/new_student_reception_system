@@ -2,6 +2,7 @@ import { Response } from '../../types/response';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
 import { client } from '../client';
+import { PcType } from '../api';
 
 export const editRemarks = async (
   studentId: string,
@@ -48,7 +49,7 @@ export const editRemarks = async (
         department: data.faculty,
         remarks: data.remarks || '',
         supply: data.supply,
-        isDeprecatedPC: data.pcType === 'NonStandard',
+        isDeprecatedPC: data.pcType === PcType.Standard,
         isNeedNotify: data.checkInBlock,
         receptionStatus: data.isCheckedIn,
       },

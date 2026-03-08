@@ -2,6 +2,7 @@ import { Response } from '../../types/response';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
 import { client } from '../client';
+import { PcType } from '../api';
 
 export const getStudentData = async (studentId: string): Promise<Response<StudentData | null>> => {
   const { data, error } = await client.GET('/api/v1/Student/{studentId}', {
@@ -31,7 +32,7 @@ export const getStudentData = async (studentId: string): Promise<Response<Studen
       department: data.faculty,
       remarks: data.remarks || '',
       supply: data.supply,
-      isDeprecatedPC: data.pcType === 'NonStandard',
+      isDeprecatedPC: data.pcType === PcType.Standard,
       isNeedNotify: data.checkInBlock,
       receptionStatus: data.isCheckedIn,
     },
