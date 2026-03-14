@@ -15,6 +15,7 @@ export enum MessageCode {
   FAILED_FIREBASE_SDK_READ = 'FAILED_FIREBASE_SDK_READ',
   CREATE_DIRECTORY_FAILED = 'CREATE_DIRECTORY_FAILED',
   NO_SELECTED_FILE = 'NO_SELECTED_FILE',
+  PRINTER_NOT_FOUND = 'PRINTER_NOT_FOUND',
 }
 
 type MessageCodeLists = {
@@ -84,5 +85,9 @@ export const MessageCodeList: MessageCodeLists = {
   },
   NO_SELECTED_FILE: {
     message: 'ファイルが選択されていません。',
+  },
+  PRINTER_NOT_FOUND: {
+    message: 'プリンタを検出できませんでした。',
+    subMessage: 'プリンタを接続してから再度アプリを起動してください。',
   },
 } as const;

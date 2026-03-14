@@ -1,28 +1,14 @@
-import { exec } from 'child_process';
+import { execa } from 'execa';
 import { dialog } from 'electron';
-import { join } from 'path';
-import { BASE_PATH } from './index';
 import { getDefaultPrinter } from './getDefaultPrinter';
 
-export const exportPrinterConfigration = async () => {
-  const configDirPath = join(BASE_PATH, 'config');
-
+export const exportPrinterConfigration = async (configPath: string) => {
   const defaultPrinter = await getDefaultPrinter();
   const query = `( Get-PrintConfiguration -PrinterName "${defaultPrinter.displayName}" ).PrintTicketXML | Out-File printerConfig.xml -Encoding ascii`;
 
-  await new Promise<void>((resolve, reject) => {
-    exec(
-      query,
-      { shell: 'powershell.exe', cwd: configDirPath },
-      (error, _, stderr) => {
-        if (stderr || error) {
-          console.log(error);
-          dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました。別のプリンタを接続し、既定のプリンタに設定してください。');
-          reject(new Error('Failed to export printer configuration'));
-        } else {
-          resolve();
-        }
-      },
-    );
-  });
+  await execa('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', query], { cwd: configPath })
+    .catch((error) => {
+      console.log(error);
+      dialog.showErrorBox('エラー', 'プリンタ構成情報の出力に失敗しました。別のプリンタを接続し、既定のプリンタに設定してください。');
+    });
 };

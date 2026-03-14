@@ -1,11 +1,12 @@
 import { Response } from '../../types/response';
 import { StudentData } from '../../types/studentData';
 import { MessageCode } from '../../types/messageCode';
+import { BusinessError } from '../../errors/BusinessError';
 import { client } from '../client';
 import { PcType } from '../api';
 
 export const getStudentData = async (studentId: string): Promise<Response<StudentData | null>> => {
-  const { data, error } = await client.GET('/api/v1/Student/{studentId}', {
+  const { data, error, response } = await client.GET('/api/v1/Student/{studentId}', {
     params: {
       path: {
         studentId: studentId
@@ -13,15 +14,12 @@ export const getStudentData = async (studentId: string): Promise<Response<Studen
     }
   });
 
+  if (response.status === 404) {
+    throw new BusinessError(MessageCode.NOT_FOUND_STUDENT);
+  }
+
   if (error) {
-    return {
-      status: false,
-      data: null,
-      error: {
-        code: MessageCode.NOT_FOUND_STUDENT,
-        message: '対象の学籍番号の学生が見つかりませんでした',
-      },
-    };
+    throw new BusinessError(MessageCode.INTERNAL_SERVER_ERROR);
   }
 
   return {

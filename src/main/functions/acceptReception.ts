@@ -1,11 +1,12 @@
 import { Response } from '../../types/response';
 import { StudentData } from '../../types/studentData';
-import { dialog } from 'electron';
+import { MessageCode } from '../../types/messageCode';
+import { BusinessError } from '../../errors/BusinessError';
 import { client } from '../client';
 import { PcType } from '../api';
 
 export const acceptReception = async (studentId: string): Promise<Response<StudentData>> => {
-  const { data, error } = await client.POST('/api/v1/Student/{studentId}/check-in', {
+  const { data, error, response } = await client.POST('/api/v1/Student/{studentId}/check-in', {
     params: {
       path: {
         studentId: studentId
@@ -13,20 +14,12 @@ export const acceptReception = async (studentId: string): Promise<Response<Stude
     }
   });
 
-  if (error?.status === 404) {
-    dialog.showErrorBox(
-      'Error',
-      '対象の学籍番号の学生が見つかりませんでした。',
-    );
-    throw new Error('Student not found.');
+  if (response.status === 404) {
+    throw new BusinessError(MessageCode.NOT_FOUND_STUDENT);
   }
 
   if (error) {
-    dialog.showErrorBox(
-      'Error',
-      '受付処理に失敗しました。',
-    );
-    throw new Error('Failed to accept reception.');
+    throw new BusinessError(MessageCode.INTERNAL_SERVER_ERROR);
   }
 
   return {
